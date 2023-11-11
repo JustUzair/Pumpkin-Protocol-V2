@@ -46,7 +46,7 @@ const Home = () => {
                 width={100}
                 alt="category"
                 height={100}
-                className="w-[120px]"
+                className="w-[120px] animate-bounce"
               />
               <span className="text-xl font-semibold">Metaverse Index</span>
               <span className="w-[50%]">
@@ -59,7 +59,7 @@ const Home = () => {
                 width={100}
                 alt="category"
                 height={100}
-                className="w-[120px]"
+                className="w-[120px] animate-bounce"
               />
               <span className="text-xl font-semibold">Defi Pulse Index</span>
               <span className="w-[50%]">
@@ -73,7 +73,7 @@ const Home = () => {
                 width={100}
                 alt="category"
                 height={100}
-                className="w-[120px]"
+                className="w-[120px] animate-bounce"
               />
               <span className="text-xl font-semibold">
                 Liquid Staking Index
