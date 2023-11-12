@@ -23,10 +23,10 @@ contract mintAllTestTokens {
         genericToken(AAVEAddress).approve(msg.sender,1000 ether);
 
         genericToken(USDCAddress).transferFrom(address(this),msg.sender,1000);
-        /*genericToken(WETHAddress).transferFrom(address(this),msg.sender,1000 ether);
+        genericToken(WETHAddress).transferFrom(address(this),msg.sender,1000 ether);
         genericToken(WBTCAddress).transferFrom(address(this),msg.sender,1000 ether);
         genericToken(MATICAddress).transferFrom(address(this),msg.sender,1000 ether);
-        genericToken(AAVEAddress).transferFrom(address(this),msg.sender,1000 ether);*/
+        genericToken(AAVEAddress).transferFrom(address(this),msg.sender,1000 ether);
 
                 
     }

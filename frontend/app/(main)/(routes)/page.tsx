@@ -2,9 +2,12 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { MintUtility } from "./_components/MintUtility";
+import { useState } from "react";
 
 const Home = () => {
   const router = useRouter();
+  const [mintUtility, setMintUtility] = useState(false);
   return (
     <>
       <div className="mx-auto lg:w-[60%] sm:w-[100%]">
@@ -31,12 +34,8 @@ const Home = () => {
               >
                 Create Now
               </Button>
-              <Button
-                variant="ghost"
-                className="border-2 border-slate-900 dark:border-violet-400"
-              >
-                Get Utility Tokens
-              </Button>
+
+              <MintUtility />
             </div>
           </div>
         </div>

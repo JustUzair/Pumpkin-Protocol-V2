@@ -1,0 +1,20 @@
+{
+  "1101": {
+    "TokenFactory": [],
+    "MintAllUtliity": [],
+    "USDC": [],
+    "WETH": [],
+    "WBTC": [],
+    "MATIC": [],
+    "AAVE": []
+  },
+  "1442": {
+    "TokenFactory": ["0x7da10510e12778790d14d3CD723140BAf674bFcA"],
+    "MintAllUtliity": ["0xe1dA34A87A8cFB9E665330EEfCc4CB0EF768da1c"],
+    "USDC": ["0x4D424DF818920daA5E7c18d895FeEFf0a0aC7696"],
+    "WETH": ["0xFFB5915AEa9C1337b9B18A5Eea52E26570529D61"],
+    "WBTC": ["0xc8A83EB3B77C22C9189465db7F6F946592b30D4E"],
+    "MATIC": ["0xEb1Eb59a354A536288d84CbF6028a2469CdAd741"],
+    "AAVE": ["0xC4577cE8C2a7746BdA75F678d5b951EB26E3567D"]
+  }
+}
