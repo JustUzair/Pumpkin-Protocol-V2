@@ -1,0 +1,40 @@
+{
+  "address": "0x69277D5a3f40217D5BaE30e3c21fc206DD4a2EA9",
+  "abi": [],
+  "transactionHash": "0x6da125a9a5514579679eb4e2fea736026e15b241e2d46af46da4ad842cefc1ff",
+  "receipt": {
+    "to": null,
+    "from": "0x4e8fD06E8e4623589F1A4006b857472d70d2560E",
+    "contractAddress": "0x69277D5a3f40217D5BaE30e3c21fc206DD4a2EA9",
+    "transactionIndex": 0,
+    "gasUsed": "67054",
+    "logsBloom": "0x00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+    "blockHash": "0x6d4c325d777b1a274e9c1a02967f4fe33f8d729a57ffa81db36f322969653813",
+    "transactionHash": "0x6da125a9a5514579679eb4e2fea736026e15b241e2d46af46da4ad842cefc1ff",
+    "logs": [],
+    "blockNumber": 3150482,
+    "cumulativeGasUsed": "67054",
+    "status": 1,
+    "byzantium": true
+  },
+  "args": [],
+  "numDeployments": 1,
+  "solcInputHash": "0c8bf82fb0a1636e6d913a1fd1fbdcfb",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.19+commit.7dd6d404\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/TokenFactory.sol\":\"TokenFactory\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\",\"useLiteralContent\":true},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"contracts/TokenFactory.sol\":{\"content\":\"//SPDX-License-Identifier: MIT\\r\\n\\r\\npragma solidity ^0.8.9;\\r\\n\\r\\ncontract TokenFactory{\\r\\n\\r\\n}\",\"keccak256\":\"0x575aef10e340bf2d2b00a3cdf6b8dc60f8d54039a6b52ab1f7f3cd239972ee5c\",\"license\":\"MIT\"}},\"version\":1}",
+  "bytecode": "0x6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212201f005224c4dd559b4a25a69676c7e862ed1d93b37b131dcff4d99f2d429afe9464736f6c63430008130033",
+  "deployedBytecode": "0x6080604052600080fdfea26469706673582212201f005224c4dd559b4a25a69676c7e862ed1d93b37b131dcff4d99f2d429afe9464736f6c63430008130033",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  },
+  "storageLayout": {
+    "storage": [],
+    "types": null
+  }
+}

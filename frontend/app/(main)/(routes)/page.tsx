@@ -1,11 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
+
 const Home = () => {
+  const router = useRouter();
   return (
     <>
       <div className="mx-auto lg:w-[60%] sm:w-[100%]">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between flex-col lg:flex-row">
           <Image
             src={"/about.png"}
             width={100}
@@ -13,17 +16,18 @@ const Home = () => {
             height={100}
             className="w-[300px]"
           />
-          <div className="flex flex-col items-center w-[50%]">
+          <div className="flex flex-col items-center lg:w-[50%] w-[80%]">
             <span className="font-extrabold space-x-3 text-5xl leading-tight -tracking-wider w-[70%] self-start">
               Cryptocurrencies Unite, Create an Index in sight!
             </span>
             <p className="mt-2 text-xl self-start">
               Easily create your index tokens on the chains with Zk Proofs
             </p>
-            <div className="flex items-center justify-between w-[50%] mt-10 self-start">
+            <div className="flex items-center justify-between lg:w-[50%] w-[70%] mt-10 self-start">
               <Button
                 variant="ghost"
                 className="border-2 border-slate-900 dark:border-violet-400"
+                onClick={() => router.push("/tokens/create")}
               >
                 Create Now
               </Button>
@@ -39,7 +43,7 @@ const Home = () => {
 
         <div className="text-center text-gray-800 dark:text-gray-200 mt-20 pb-10">
           <h2 className="font-bold text-3xl ">Popular Index Tokens</h2>
-          <div className="flex items-center justify-between px-5 mt-10">
+          <div className="flex items-center justify-between px-5 mt-10 flex-col lg:flex-row gap-y-4 ">
             <div className="flex flex-col w-[33%] items-center justify-around">
               <Image
                 src="/category1-img.png"
