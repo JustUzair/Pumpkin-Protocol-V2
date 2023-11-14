@@ -1,3 +1,4 @@
+import Image from "next/image";
 export const Footer = () => {
   return (
     <div className="relative">
@@ -8,7 +9,7 @@ export const Footer = () => {
               href="https://flowbite.com/"
               className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
             >
-              <img
+              <Image
                 src="https://flowbite.com/docs/images/logo.svg"
                 className="h-8"
                 alt="Flowbite Logo"
