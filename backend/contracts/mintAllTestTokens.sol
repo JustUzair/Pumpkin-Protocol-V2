@@ -3,30 +3,24 @@ pragma solidity ^0.8.19;
 
 
 contract mintAllTestTokens {
-    address USDCAddress = 0x4D424DF818920daA5E7c18d895FeEFf0a0aC7696;
-    address WETHAddress = 0xFFB5915AEa9C1337b9B18A5Eea52E26570529D61;
-    address WBTCAddress = 0xc8A83EB3B77C22C9189465db7F6F946592b30D4E;
-    address MATICAddress = 0xEb1Eb59a354A536288d84CbF6028a2469CdAd741;
-    address AAVEAddress = 0xC4577cE8C2a7746BdA75F678d5b951EB26E3567D;
+    address USDCAddress = 0x010999b77887cBc58831a1B56A452557bb2BF320;
+    address WETHAddress = 0xb884adABb32f9B89711F417E7beBBD39161FABe4;
+    address WBTCAddress = 0x54efa9BdAE57a9d6564D1C91494B4A6451ca3543;
+    address MATICAddress = 0xea6f35519D0Ae39Dafe928fbeBC8c4bDEbe8F155;
+    address AAVEAddress = 0xDe357BDc18B18b8A1518179322bcF4f31125Fff9;
 
     function mintAllTokens() public {
-        genericToken(USDCAddress).mint(1000 ether);
-        genericToken(WETHAddress).mint(1000 ether);
-        genericToken(WBTCAddress).mint(1000 ether);
-        genericToken(MATICAddress).mint(1000 ether);
-        genericToken(AAVEAddress).mint(1000 ether);
+        IERC20(USDCAddress).mint(1000 ether);
+        IERC20(WETHAddress).mint(1000 ether);
+        IERC20(WBTCAddress).mint(1000 ether);
+        IERC20(MATICAddress).mint(1000 ether);
+        IERC20(AAVEAddress).mint(1000 ether);
 
-        genericToken(USDCAddress).approve(msg.sender,1000 ether);
-        genericToken(WETHAddress).approve(msg.sender,1000 ether);
-        genericToken(WBTCAddress).approve(msg.sender,1000 ether);
-        genericToken(MATICAddress).approve(msg.sender,1000 ether);
-        genericToken(AAVEAddress).approve(msg.sender,1000 ether);
-
-        genericToken(USDCAddress).transferFrom(address(this),msg.sender,1000);
-        genericToken(WETHAddress).transferFrom(address(this),msg.sender,1000 ether);
-        genericToken(WBTCAddress).transferFrom(address(this),msg.sender,1000 ether);
-        genericToken(MATICAddress).transferFrom(address(this),msg.sender,1000 ether);
-        genericToken(AAVEAddress).transferFrom(address(this),msg.sender,1000 ether);
+        IERC20(USDCAddress).transfer(msg.sender,1000 ether);
+        IERC20(WETHAddress).transfer(msg.sender,1000 ether);
+        IERC20(WBTCAddress).transfer(msg.sender,1000 ether);
+        IERC20(MATICAddress).transfer(msg.sender,1000 ether);
+        IERC20(AAVEAddress).transfer(msg.sender,1000 ether);
 
                 
     }
@@ -34,13 +28,13 @@ contract mintAllTestTokens {
 
 }   
 
-interface genericToken {
+interface IERC20 {
     function mint(uint amount) external;
     function transferFrom(
         address sender,
         address recipient,
         uint amount
     ) external returns (bool);
-
+    function transfer(address recipient, uint amount) external returns (bool);
     function approve(address spender, uint amount) external returns (bool);
 }

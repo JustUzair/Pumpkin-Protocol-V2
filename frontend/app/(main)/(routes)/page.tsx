@@ -26,10 +26,10 @@ const Home = () => {
             <p className="mt-2 text-xl self-start">
               Easily create your index tokens on the chains with Zk Proofs
             </p>
-            <div className="flex items-center justify-between lg:w-[50%] w-[70%] mt-10 self-start">
+            <div className="flex items-center justify-between lg:w-[65%] md:w-[40%] sm:w-[100%] mt-10 self-start">
               <Button
                 variant="ghost"
-                className="border-2 border-slate-900 dark:border-violet-400"
+                className="border-2 border-slate-900 dark:border-violet-400 mr-2"
                 onClick={() => router.push("/tokens/create")}
               >
                 Create Now

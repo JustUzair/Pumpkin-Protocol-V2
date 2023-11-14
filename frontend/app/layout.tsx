@@ -108,7 +108,7 @@ export default function RootLayout({
               <Toaster position="bottom-center" />
               <Navbar />
 
-              <div className="bg-gradient-to-br from-blue-100 to-purple-200 min-h-full min-w-full dark:from-black dark:to-[#292E49] mb-[10em]">
+              <div className="bg-gradient-to-br from-blue-100 to-purple-200 min-h-screen min-w-full dark:from-black dark:to-[#292E49] mb-[10em]">
                 {children}
               </div>
 
