@@ -14,7 +14,21 @@ import { Spinner } from "@/components/spinner";
 import Image from "next/image";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import { BadgeDollarSign, HeartHandshake, PlusCircle } from "lucide-react";
+import {
+  BadgeDollarSign,
+  Check,
+  Copy,
+  Forward,
+  Globe,
+  HeartHandshake,
+  PlusCircle,
+  Send,
+} from "lucide-react";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 
 const Tokens = function () {
   const { chain } = useNetwork();
@@ -39,6 +53,7 @@ const Tokens = function () {
   const [tokens, setTokens] = useState([]);
   const [tokenNames, setTokenNames] = useState([]);
   const [tokenSymbols, setTokenSymbols] = useState([]);
+  const [copied, setCopied] = useState(false);
 
   const TokenFactoryContract: any = {
     address: TokenFactoryAddress,
@@ -87,7 +102,14 @@ const Tokens = function () {
       </div>
     );
   }
-
+  const onCopy = (data: string) => {
+    navigator.clipboard.writeText(data);
+    setCopied(true);
+    toast.success("Token address copied to clipboard!");
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  };
   if (isLoaded) {
     return (
       <>
@@ -119,12 +141,64 @@ const Tokens = function () {
                       >
                         {tokenNames[index]}
                       </h5>
-                      <h5
-                        className="text-base text-muted-foreground/70 dark:text-muted-foreground/50 lg:pr-10 sm:pr-3 md:pr-5"
-                        title="Index Token Symbol"
-                      >
-                        {tokenSymbols[index]}
-                      </h5>
+                      <span className=" lg:pr-10 sm:pr-3 md:pr-5">
+                        <h5
+                          className="text-base text-muted-foreground/70 dark:text-muted-foreground/90"
+                          title="Index Token Symbol"
+                        >
+                          <span className="flex items-center ">
+                            {tokenSymbols[index]}
+
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  size="icon"
+                                  variant={"ghost"}
+                                  className="bg-transparent hover:bg-transparent"
+                                >
+                                  <Forward className="h-5 w-5 text-blue-400 dark:text-orange-400 cursor-pointer ml-2" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                className="w-72"
+                                align="end"
+                                alignOffset={8}
+                                forceMount
+                              >
+                                <div className="space-y-4">
+                                  <div className="flex justify-between items-center gap-x-2">
+                                    <Globe className=" text-sky-500 animate-pulse h-8 w-8" />
+                                    <p className="text-xs font-medium text-sky-500">
+                                      Share this token address with your friends
+                                      to allow them to issue one for themselves
+                                    </p>
+                                  </div>
+                                  <div className="flex items-center">
+                                    <input
+                                      value={tokens[index]}
+                                      className="flex-1 px-2 text-xs border rounded-l-md h-8 bg-muted truncate"
+                                      disabled
+                                    />
+                                    <Button
+                                      onClick={() => {
+                                        onCopy(tokens[index]);
+                                      }}
+                                      disabled={copied}
+                                      className="h-8 rounded-l-none"
+                                    >
+                                      {copied ? (
+                                        <Check className="h-4 w-4" />
+                                      ) : (
+                                        <Copy className="h-4 w-4" />
+                                      )}
+                                    </Button>
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </span>
+                        </h5>
+                      </span>
                     </div>
                     <p
                       className="group:invisble mb-3 font-normal truncate cursor-copy"
@@ -139,7 +213,7 @@ const Tokens = function () {
 
                     <div className="actions-container flex flex-col py-3 px-2">
                       <div className="my-2 w-[100%]">
-                        <Button className="w-[100%]" variant={"ghost"}>
+                        <Button className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800">
                           Issue Token{" "}
                           <span className="ml-2">
                             <PlusCircle className="h-4 w-4" />
@@ -147,7 +221,7 @@ const Tokens = function () {
                         </Button>
                       </div>
                       <div className="my-2 w-[100%]">
-                        <Button className="w-[100%]">
+                        <Button className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800">
                           Redeem Token{" "}
                           <span className="ml-2">
                             <BadgeDollarSign className="h-4 w-4" />
@@ -155,7 +229,7 @@ const Tokens = function () {
                         </Button>
                       </div>
                       <div className="my-2 w-[100%]">
-                        <Button className="w-[100%]">
+                        <Button className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800">
                           Claim Fee{" "}
                           <span className="ml-2">
                             <HeartHandshake className="h-4 w-4" />
