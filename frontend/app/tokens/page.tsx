@@ -1,3 +1,5 @@
-export default function () {
+const Tokens = function () {
   return <>All TOkens</>;
-}
+};
+
+export default Tokens;
