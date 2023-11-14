@@ -10,6 +10,8 @@ export const Footer = () => {
               className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
             >
               <Image
+                width={100}
+                height={100}
                 src="https://flowbite.com/docs/images/logo.svg"
                 className="h-8"
                 alt="Flowbite Logo"

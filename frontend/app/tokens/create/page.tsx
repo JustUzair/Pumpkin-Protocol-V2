@@ -331,6 +331,13 @@ const CreateIndexToken = () => {
     }
   }, []);
 
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen min-w-full mx-auto absolute top-[50%] left-[50%]">
+        <Spinner size={"lg"} />
+      </div>
+    );
+  }
   if (isLoaded) {
     return (
       <div className="py-[50px]">
