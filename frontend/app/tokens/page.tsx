@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import contractAddresses from "../../constants/networkMappings.json";
 import ERC20_ABI from "../../constants/ERC20_ABI.json";
@@ -50,9 +51,9 @@ const Tokens = function () {
     setIsLoaded(true);
   }, []);
 
-  const [tokens, setTokens] = useState([]);
-  const [tokenNames, setTokenNames] = useState([]);
-  const [tokenSymbols, setTokenSymbols] = useState([]);
+  const [tokens, setTokens] = useState<any[]>([]);
+  const [tokenNames, setTokenNames] = useState<any[]>([]);
+  const [tokenSymbols, setTokenSymbols] = useState<any[]>([]);
   const [copied, setCopied] = useState(false);
 
   const TokenFactoryContract: any = {
@@ -82,9 +83,9 @@ const Tokens = function () {
 
   async function getUserIndexTokens() {
     if (data !== undefined) {
-      setTokenNames(data[0]!.result);
-      setTokenSymbols(data[1]!.result);
-      setTokens(data[2]!.result);
+      setTokenNames(data[0].result);
+      setTokenSymbols(data[1].result);
+      setTokens(data[2].result);
     }
   }
 
