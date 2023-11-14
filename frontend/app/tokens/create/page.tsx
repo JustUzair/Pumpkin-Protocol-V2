@@ -24,9 +24,6 @@ const CreateIndexToken = () => {
   const { chain } = useNetwork();
   const chainId = (chain?.id?.toString() as string) || ("" as string);
   const router = useRouter();
-  // console.log("====================================");
-  // console.log(chain?.id);
-  // console.log("====================================");
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [usdc, setUsdc] = useState(20);
@@ -141,62 +138,6 @@ const CreateIndexToken = () => {
     }
     return true;
   };
-
-  // WEB3
-  // const createTokenWeb3 = async () => {
-  //   await enableWeb3();
-  //   await authenticate();
-  //   const utilityTokenAddress = [];
-  //   const utilityTokenRatios = [];
-  //   if (!checkTokenRatio()) return;
-  //   if (weth > 0) {
-  //     utilityTokenAddress.push(WETHAddress);
-  //     utilityTokenRatios.push(weth);
-  //   }
-  //   if (usdc > 0) {
-  //     utilityTokenAddress.push(USDCAddress);
-  //     utilityTokenRatios.push(usdc);
-  //   }
-  //   if (aave > 0) {
-  //     utilityTokenAddress.push(AAVEAddress);
-  //     utilityTokenRatios.push(aave);
-  //   }
-  //   if (wbtc > 0) {
-  //     utilityTokenAddress.push(WBTCAddress);
-  //     utilityTokenRatios.push(wbtc);
-  //   }
-  //   if (matic > 0) {
-  //     utilityTokenAddress.push(WFTMAddress);
-  //     utilityTokenRatios.push(matic);
-  //   }
-  //   if (tokenName.length == 0 || tokenSymbol.length == 0) {
-  //     window.alert("Token Name and Symbol cannot be empty");
-  //     return;
-  //   }
-
-  //   runContractFunction({
-  //     params: {
-  //       abi: PUMPKIN_ABI,
-  //       contractAddress: contractAddress, // specify the networkId
-  //       functionName: "createToken",
-  //       params: {
-  //         _tokens: utilityTokenAddress,
-  //         _percentages: utilityTokenRatios,
-  //         _name: tokenName,
-  //         _symbol: tokenSymbol,
-  //       },
-  //     },
-  //     onError: (error) => {
-  //       failureNotification(error.message);
-  //       console.log(error);
-  //     },
-  //     onSuccess: (data) => {
-  //       console.log(data);
-  //       successNotification(`Index Token Created`);
-  //       router.push("/view-tokens");
-  //     },
-  //   });
-  // };
 
   const calculateIndexTokenPrice = () => {
     const usdcPrice =
@@ -707,7 +648,7 @@ const CreateIndexToken = () => {
                     </Button>
                     {isSuccess &&
                       toast.success(
-                        `Your index token was created successfully`
+                        `Your index token was created successfully! (Please reload after tx completes)`
                       )}
                   </div>
                   <br />

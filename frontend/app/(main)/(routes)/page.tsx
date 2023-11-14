@@ -41,7 +41,19 @@ const Home = () => {
         </div>
 
         <div className="text-center text-gray-800 dark:text-gray-200 mt-20 pb-10">
-          <h2 className="font-bold text-3xl ">Popular Index Tokens</h2>
+          <div className="flex w-[50%] items-center justify-around mx-auto">
+            <h2 className="font-bold text-3xl justify-self-end">
+              Popular Index Tokens
+            </h2>
+            <Button
+              size={"sm"}
+              onClick={() => {
+                router.push("/tokens");
+              }}
+            >
+              View All Indexes
+            </Button>
+          </div>
           <div className="flex items-center justify-between px-5 mt-10 flex-col lg:flex-row gap-y-4 ">
             <div className="flex flex-col w-[33%] items-center justify-around">
               <Image
