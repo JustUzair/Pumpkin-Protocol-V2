@@ -148,8 +148,8 @@ const Tokens = function () {
                   <div className="p-5">
                     <div className="token-info flex justify-between items-center flex-wrap">
                       <h5
-                        className="mb-2 lg:text-2xl md:text-xl text-base font-bold tracking-widest break-words text-gray-900 dark:text-white"
-                        title="Index Token Name"
+                        className="truncate mb-2 lg:text-2xl md:text-xl text-base font-bold tracking-widest break-words text-gray-900 dark:text-white"
+                        title={`Index Token Name :  ${tokenNames[index]}`}
                       >
                         {tokenNames[index]}
                       </h5>

@@ -79,7 +79,7 @@ export function MintUtility() {
     abi: mintAllUtilityAbi,
     functionName: "mintAllTokens",
   });
-
+  if (isSuccess) toast.success("Test Tokens minted successfully!");
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -177,7 +177,6 @@ export function MintUtility() {
                   <Spinner />
                 </span>
               )}
-              {isSuccess && toast.success("Test Tokens minted successfully!")}
             </Button>
           </DialogFooter>
         </DialogContent>

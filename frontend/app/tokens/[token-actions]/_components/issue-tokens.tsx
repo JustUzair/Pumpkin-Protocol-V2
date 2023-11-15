@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 "use client";
 
 import { Button } from "@/components/ui/button";
@@ -29,8 +31,12 @@ import {
 } from "wagmi";
 import { ethers } from "ethers";
 import { PlusCircle } from "lucide-react";
-
-export const IssueTokens = ({ defaultTokenAddress }) => {
+import Image from "next/image";
+export const IssueTokens = ({
+  defaultTokenAddress,
+}: {
+  defaultTokenAddress: string;
+}) => {
   const { chain } = useNetwork();
   const { address } = useAccount();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -134,9 +140,6 @@ export const IssueTokens = ({ defaultTokenAddress }) => {
   }
 
   useEffect(() => {
-    console.log("====================================");
-    console.log("Effect");
-    console.log("====================================");
     setIsLoaded(true);
   }, []);
 
@@ -145,31 +148,47 @@ export const IssueTokens = ({ defaultTokenAddress }) => {
       getUserIndexTokens();
     }
   }, [address, isLoaded]);
-  console.log("====================================");
-  console.log(data);
-  console.log("====================================");
-  //   const { data, isLoading, isSuccess, write } = useContractWrite({
-  //     address: TokenFactoryAddress as keyof typeof TokenFactoryAddress,
-  //     abi: FACTORY_ABI,
-  //     functionName: "issueToken",
-  //     args: [tokenAddress, ethers.parseEther(tokenAmount.toString())],
-  //   });
+
+  const {
+    data: issueData,
+    isLoading: issueLoading,
+    isSuccess: issueSuccess,
+    write: issueWrite,
+    isError: isIssueError,
+    error: issueError,
+  } = useContractWrite({
+    address: TokenFactoryAddress as keyof typeof TokenFactoryAddress,
+    abi: FACTORY_ABI,
+    functionName: "issueToken",
+    args: [tokenAddress, ethers.parseEther(tokenAmount.toString())],
+  });
+  if (issueSuccess) toast.success("Index token minted successfully!!");
+  if (isIssueError) toast.error(issueError?.message);
   const approveTokens = async () => {
     try {
-      let signer = null;
+      await getUserIndexTokens();
+      // await window.ethereum.enable();
+
+      // const provider = new ethers.providers.Web3Provider(
+      //   window.ethereum,
+      //   "any"
+      // );
+
+      // const signer = provider.getSigner();
 
       let provider;
       if (window?.ethereum == null) {
         console.log("MetaMask not installed; using read-only defaults");
         provider = ethers.getDefaultProvider();
+        return;
       } else {
         provider = new ethers.BrowserProvider(window?.ethereum);
-
+        await provider.send("eth_requestAccounts", []);
         // It also provides an opportunity to request access to write
         // operations, which will be performed by the private key
         // that MetaMask manages for the user.
-        signer = await provider.getSigner();
       }
+      const signer = await provider.getSigner();
       const WETH = new ethers.Contract(
         WETHAddress as keyof typeof WETHAddress,
         ERC20_ABI,
@@ -197,10 +216,10 @@ export const IssueTokens = ({ defaultTokenAddress }) => {
       );
       const tokenArrayLength = tokenRatios.length;
 
-      // console.log(tokenArrayLength);
+      console.log(tokenArrayLength);
+
       if (tokenArrayLength >= 1 && underlyingTokens[0] == USDCAddress) {
         const USDCWithSigner = USDC.connect(signer);
-
         await USDCWithSigner.approve(
           tokenAddress,
           ethers.parseEther(
@@ -487,17 +506,16 @@ export const IssueTokens = ({ defaultTokenAddress }) => {
       //     ).toString()
       //   )
       // );
-      console.log("====================================");
     } catch (err: any) {
       //   window.alert(err);
       console.log("====================================");
-      console.log(err);
+      console.error(err);
       console.log("====================================");
       toast.error(err.message);
     }
   };
   async function issueTokenFromContract() {
-    await approveTokens();
+    await issueWrite();
   }
   return (
     <Dialog>
@@ -528,9 +546,112 @@ export const IssueTokens = ({ defaultTokenAddress }) => {
           <DialogHeader>
             <DialogTitle>Issue Index Tokens</DialogTitle>
             <DialogDescription>
-              Get your underlying test tokens for testing the dApp
+              Issue an Index created by you or someone else
             </DialogDescription>
           </DialogHeader>
+          <div className="token-percentages">
+            <h3 className="text-left tracking-wider font-semibold px-3 py-2">
+              Token Composition
+            </h3>
+            {underlyingTokens.map((_, i) => {
+              if (underlyingTokens[i] == USDCAddress) {
+                return (
+                  <div>
+                    <span>
+                      {" "}
+                      <Image
+                        src="https://seeklogo.com/images/U/usd-coin-usdc-logo-CB4C5B1C51-seeklogo.com.png"
+                        width={50}
+                        height={50}
+                        alt="token logo"
+                        className="crypto_icon my-1"
+                      />
+                      USDC
+                    </span>{" "}
+                    <span className="text-lg underline font-medium italic">
+                      {ethers.formatUnits(tokenRatios[i], "ether") * 100}%
+                    </span>
+                  </div>
+                );
+              }
+              if (underlyingTokens[i] == WETHAddress) {
+                return (
+                  <div className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto">
+                    <span className=" tracking-wider flex sm:flex-wrap md:flex-wrap items-center justify-between">
+                      <Image
+                        src="https://www.pngall.com/wp-content/uploads/10/Ethereum-Logo-PNG.png"
+                        width={50}
+                        height={50}
+                        alt="token logo"
+                        className="crypto_icon my-1 mr-2"
+                      />
+                      WETH -
+                    </span>{" "}
+                    <span className="text-lg underline font-medium italic">
+                      {ethers.formatUnits(tokenRatios[i], "ether") * 100}%
+                    </span>
+                  </div>
+                );
+              }
+              if (underlyingTokens[i] == WBTCAddress) {
+                return (
+                  <div className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto">
+                    <span className=" tracking-wider flex sm:flex-wrap md:flex-wrap items-center justify-between">
+                      <Image
+                        src="https://cryptologos.cc/logos/wrapped-bitcoin-wbtc-logo.png"
+                        width={50}
+                        height={50}
+                        alt="token logo"
+                        className="crypto_icon my-1 mr-2"
+                      />
+                      WBTC -
+                    </span>{" "}
+                    <span className="text-lg underline font-medium italic">
+                      {ethers.formatUnits(tokenRatios[i], "ether") * 100}%
+                    </span>
+                  </div>
+                );
+              }
+              if (underlyingTokens[i] == MATICAddress) {
+                return (
+                  <div className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto">
+                    <span className=" tracking-wider flex sm:flex-wrap md:flex-wrap items-center justify-between">
+                      <Image
+                        src="https://cryptologos.cc/logos/polygon-matic-logo.png"
+                        width={50}
+                        height={50}
+                        alt="token logo"
+                        className="crypto_icon my-1 mr-2"
+                      />
+                      WMATIC -
+                    </span>{" "}
+                    <span className="text-lg underline font-medium italic">
+                      {ethers.formatUnits(tokenRatios[i], "ether") * 100}%
+                    </span>
+                  </div>
+                );
+              }
+              if (underlyingTokens[i] == AAVEAddress) {
+                return (
+                  <div className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto">
+                    <span className=" tracking-wider flex sm:flex-wrap md:flex-wrap items-center justify-between">
+                      <Image
+                        src="https://cryptologos.cc/logos/aave-aave-logo.png"
+                        width={50}
+                        height={50}
+                        alt="token logo"
+                        className="crypto_icon my-1 mr-2"
+                      />
+                      AAVE -
+                    </span>{" "}
+                    <span className="text-lg underline font-medium italic">
+                      {ethers.formatUnits(tokenRatios[i], "ether") * 100}%
+                    </span>
+                  </div>
+                );
+              }
+            })}
+          </div>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-1 items-center gap-4">
               <Label htmlFor="name" className="text-left">
@@ -560,7 +681,18 @@ export const IssueTokens = ({ defaultTokenAddress }) => {
               />
             </div>
           </div>
-          <DialogFooter>
+          <DialogFooter className="flex sm:flex-col flex-wrap items-stretch">
+            <Label className="text-left mx-2 mt-1 mb-2">Step 1.</Label>
+            <Button
+              type="submit"
+              onClick={() => {
+                approveTokens();
+              }}
+            >
+              Approve Spending of Utility Tokens
+            </Button>
+
+            <Label className="text-left mx-2 mt-1 mb-2">Step 2.</Label>
             <Button
               type="submit"
               disabled={tokenAmount <= 0}
@@ -570,6 +702,7 @@ export const IssueTokens = ({ defaultTokenAddress }) => {
               }}
             >
               Issue Tokens
+              {issueLoading && <Spinner size={"default"} />}
             </Button>
           </DialogFooter>
         </DialogContent>
