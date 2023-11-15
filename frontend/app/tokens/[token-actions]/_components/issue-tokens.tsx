@@ -556,17 +556,20 @@ export const IssueTokens = ({
             {underlyingTokens.map((_, i) => {
               if (underlyingTokens[i] == USDCAddress) {
                 return (
-                  <div>
-                    <span>
+                  <div
+                    key={i}
+                    className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto"
+                  >
+                    <span className=" tracking-wider flex sm:flex-wrap md:flex-wrap items-center justify-between">
                       {" "}
                       <Image
                         src="https://seeklogo.com/images/U/usd-coin-usdc-logo-CB4C5B1C51-seeklogo.com.png"
                         width={50}
                         height={50}
                         alt="token logo"
-                        className="crypto_icon my-1"
+                        className="crypto_icon my-1 mr-2"
                       />
-                      USDC
+                      USDC -
                     </span>{" "}
                     <span className="text-lg underline font-medium italic">
                       {ethers.formatUnits(tokenRatios[i], "ether") * 100}%
@@ -576,7 +579,10 @@ export const IssueTokens = ({
               }
               if (underlyingTokens[i] == WETHAddress) {
                 return (
-                  <div className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto">
+                  <div
+                    key={i}
+                    className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto"
+                  >
                     <span className=" tracking-wider flex sm:flex-wrap md:flex-wrap items-center justify-between">
                       <Image
                         src="https://www.pngall.com/wp-content/uploads/10/Ethereum-Logo-PNG.png"
@@ -595,7 +601,10 @@ export const IssueTokens = ({
               }
               if (underlyingTokens[i] == WBTCAddress) {
                 return (
-                  <div className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto">
+                  <div
+                    key={i}
+                    className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto"
+                  >
                     <span className=" tracking-wider flex sm:flex-wrap md:flex-wrap items-center justify-between">
                       <Image
                         src="https://cryptologos.cc/logos/wrapped-bitcoin-wbtc-logo.png"
@@ -614,7 +623,10 @@ export const IssueTokens = ({
               }
               if (underlyingTokens[i] == MATICAddress) {
                 return (
-                  <div className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto">
+                  <div
+                    key={i}
+                    className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto"
+                  >
                     <span className=" tracking-wider flex sm:flex-wrap md:flex-wrap items-center justify-between">
                       <Image
                         src="https://cryptologos.cc/logos/polygon-matic-logo.png"
@@ -633,7 +645,10 @@ export const IssueTokens = ({
               }
               if (underlyingTokens[i] == AAVEAddress) {
                 return (
-                  <div className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto">
+                  <div
+                    key={i}
+                    className=" text-base font-semibold flex sm:flex-wrap md:flex-wrap items-center justify-between lg:w-[40%] w-[80%] mx-auto"
+                  >
                     <span className=" tracking-wider flex sm:flex-wrap md:flex-wrap items-center justify-between">
                       <Image
                         src="https://cryptologos.cc/logos/aave-aave-logo.png"
