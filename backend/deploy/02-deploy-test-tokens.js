@@ -20,12 +20,12 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
       log: true,
       waitConfirmations: network.config.blockConfirmations || 1,
     });
-    await utility.mint("10000000000000000000000000000000000000000000000000");
-    await utility.transfer(
-      mintAddr,
-      "10000000000000000000000000000000000000000000000000"
-    );
-    log(`Utiltiy ${utilityTokens[i]} deployed at : ${utility?.address}`);
+    // await utility.mint("10000000000000000000000000000000000000000000000000");
+    // await utility.transfer(
+    //   mintAddr,
+    //   "10000000000000000000000000000000000000000000000000"
+    // );
+    // log(`Utiltiy ${utilityTokens[i]} deployed at : ${utility?.address}`);
   }
 
   log(

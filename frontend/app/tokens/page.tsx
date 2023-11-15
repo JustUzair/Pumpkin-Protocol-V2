@@ -31,6 +31,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 
+import { IssueTokens } from "./[token-actions]/_components/issue-tokens";
 const Tokens = function () {
   const { chain } = useNetwork();
   const { address } = useAccount();
@@ -55,7 +56,8 @@ const Tokens = function () {
   const [tokenNames, setTokenNames] = useState<any[]>([]);
   const [tokenSymbols, setTokenSymbols] = useState<any[]>([]);
   const [copied, setCopied] = useState(false);
-
+  const [showIssueTokenModal, setShowIssueTokenModal] =
+    useState<boolean>(false);
   const TokenFactoryContract: any = {
     address: TokenFactoryAddress,
     abi: FACTORY_ABI,
@@ -223,12 +225,9 @@ const Tokens = function () {
 
                     <div className="actions-container flex flex-col py-3 px-2">
                       <div className="my-2 w-[100%]">
-                        <Button className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800">
-                          Issue Token{" "}
-                          <span className="ml-2">
-                            <PlusCircle className="h-4 w-4" />
-                          </span>
-                        </Button>
+                        <IssueTokens
+                          defaultTokenAddress={tokens[index]}
+                        ></IssueTokens>
                       </div>
                       <div className="my-2 w-[100%]">
                         <Button className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800">
