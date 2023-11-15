@@ -119,8 +119,17 @@ const Tokens = function () {
         !TokenFactoryAddress ? (
           <Error />
         ) : (
-          <div className="tokens-container w-[50%] justify-between lg:grid lg:grid-cols-3 gap-4 md:grid md:grid-cols-2 flex flex-col mx-auto px-5 py-10">
+          <div className="tokens-container w-[50%] justify-between md:w-[70%] sm:w-[80%] lg:grid lg:grid-cols-3 gap-4 md:grid md:grid-cols-2 flex flex-col mx-auto px-5 py-10">
             {tokenNames.map((_, index) => {
+              if (isFetching) {
+                return (
+                  <div className="w-[12em] max-w-[15em] h-[30vh]" key={index}>
+                    <div className="flex items-center justify-center w-[100%] h-[100%] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                      <Spinner size={"lg"} />
+                    </div>
+                  </div>
+                );
+              }
               return (
                 <div
                   className="max-w-[15em] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
@@ -137,7 +146,7 @@ const Tokens = function () {
                   <div className="p-5">
                     <div className="token-info flex justify-between items-center flex-wrap">
                       <h5
-                        className="mb-2 text-2xl font-bold tracking-widest break-words text-gray-900 dark:text-white"
+                        className="mb-2 lg:text-2xl md:text-xl text-base font-bold tracking-widest break-words text-gray-900 dark:text-white"
                         title="Index Token Name"
                       >
                         {tokenNames[index]}

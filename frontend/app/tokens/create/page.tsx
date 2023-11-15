@@ -274,7 +274,7 @@ const CreateIndexToken = () => {
 
   if (!isLoaded) {
     return (
-      <div className="min-h-screen min-w-full mx-auto absolute top-[50%] left-[50%]">
+      <div className="h-[100vh] mx-auto absolute top-[50%] left-[50%]">
         <Spinner size={"lg"} />
       </div>
     );
@@ -286,7 +286,9 @@ const CreateIndexToken = () => {
           {chainId === undefined ||
           !(chainId in contractAddresses) ||
           !TokenFactoryAddress ? (
-            <Error />
+            <div className="mt-3">
+              <Error />
+            </div>
           ) : (
             <div className="index-token--container m-4 text-gray-700 dark:text-gray-100">
               <span className="text-center font-poppins font-bold text-3xl break-words tracking-widest underline">
