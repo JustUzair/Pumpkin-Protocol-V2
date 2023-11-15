@@ -1,22 +1,21 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "./interfaces/IERC20.sol";
-
-contract Token is IERC20 {
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+contract ERC20 is IERC20 {
     uint public totalSupply;
     mapping(address => uint) public balanceOf;
     mapping(address => mapping(address => uint)) public allowance;
-    string public name ;
+    string public name;
     string public symbol;
     uint8 public decimals = 18;
+
 
     constructor(string memory _name,string memory _symbol){
         name=_name;
         symbol=_symbol;
-    }
+}
     function transfer(address recipient, uint amount) external returns (bool) {
-        
         balanceOf[msg.sender] -= amount;
         balanceOf[recipient] += amount;
         emit Transfer(msg.sender, recipient, amount);
@@ -41,10 +40,10 @@ contract Token is IERC20 {
         return true;
     }
 
-    function mint(uint amount) external {
-        balanceOf[msg.sender] += amount;
+    function mint(address to, uint amount) external {
+        balanceOf[to] += amount;
         totalSupply += amount;
-        emit Transfer(address(0), msg.sender, amount);
+        emit Transfer(address(0), to, amount);
     }
 
     function burn(uint amount) external {
