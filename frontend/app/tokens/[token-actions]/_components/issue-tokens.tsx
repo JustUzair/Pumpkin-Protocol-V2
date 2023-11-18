@@ -152,6 +152,7 @@ export const IssueTokens = ({
     ],
     structuralSharing: (prev, next) => (prev === next ? prev : next),
   });
+
   async function renderNewPercentages() {
     if (refetchError || !refetchSuccess || isRefetching) return;
     setTokenRatios(refetchData[0].result);
@@ -198,7 +199,8 @@ export const IssueTokens = ({
       ethers.parseEther(tokenAmount != "" ? tokenAmount.toString() : "0"),
     ],
   });
-  if (issueSuccess) toast.success("Index token minted successfully!!");
+  if (!issueLoading && issueSuccess)
+    toast.success("Index token minted successfully!!");
   if (isIssueError) toast.error(issueError?.message);
   if (issueLoading)
     toast.loading("Please wait while we mint you your index token!");

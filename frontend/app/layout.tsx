@@ -18,9 +18,10 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { polygonZkEvmTestnet, polygonZkEvm } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+
 import { useTheme } from "next-themes";
 import { Footer } from "@/components/footer";
-
+import { publicProvider } from "wagmi/providers/public";
 const inter = Poppins({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700"],
@@ -52,31 +53,10 @@ export default function RootLayout({
     [polygonZkEvm, polygonZkEvmTestnet],
     [
       alchemyProvider({ apiKey: process.env.ALCHEMY_ID as string }),
-      jsonRpcProvider({
-        rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] }),
-      }),
+      publicProvider(),
     ]
   );
 
-  const polygonZkTestnet = {
-    id: 1422,
-    name: "Polygon Zk Testnet ",
-    network: "Polygon Zk  Testnet",
-
-    rpcUrls: {
-      default: {
-        http: ["https://rpc.public.zkevm-test.net"],
-      },
-    },
-    blockExplorers: {
-      default: {
-        name: "Polygon Zk Testnet",
-        url: "https://testnet-zkevm.polygonscan.com/",
-      },
-    },
-
-    testnet: true,
-  };
   const { connectors } = getDefaultWallets({
     appName: "zk-index",
     projectId: "84a7a0b348562e18afb0114fd15c1a67",

@@ -4,6 +4,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -28,6 +29,7 @@ import {
   useContractReads,
   useContractWrite,
   useNetwork,
+  useWaitForTransaction,
 } from "wagmi";
 import { ethers } from "ethers";
 import { PlusCircle, BadgeDollarSign } from "lucide-react";
@@ -135,6 +137,7 @@ export const RedeemTokens = ({
     isLoading: isBalanceRefetching,
     isError: balanceRefetchError,
     isSuccess: balanceRefetchSuccess,
+    refetch: refetchBalanceFromContract,
   } = useContractReads({
     contracts: [
       {
@@ -146,10 +149,19 @@ export const RedeemTokens = ({
     ],
     structuralSharing: (prev, next) => (prev === next ? prev : next),
   });
-
+  const { isLoading: refetchLoading, isSuccess: refetchBalanceSuccess } =
+    useWaitForTransaction(refetchBalanceData);
   async function refetchBalance() {
-    if (balanceRefetchError || !balanceRefetchSuccess || isBalanceRefetching)
+    if (
+      balanceRefetchError ||
+      !balanceRefetchSuccess ||
+      isBalanceRefetching ||
+      refetchLoading ||
+      refetchBalanceSuccess
+    )
       return;
+    await refetchBalanceFromContract();
+
     // console.log("====================================");
     // console.log(
     //   ethers.formatEther(refetchBalanceData[0].result?.toString(), "ether")
@@ -202,6 +214,35 @@ export const RedeemTokens = ({
     }
   }
 
+  const {
+    data: redeemData,
+    write: redeemWrite,
+    isError: isRedeemError,
+    error: redeemError,
+    isLoading: isHashingTx,
+  } = useContractWrite({
+    address: TokenFactoryAddress as keyof typeof TokenFactoryAddress,
+    abi: FACTORY_ABI,
+    functionName: "redeemToken",
+    args: [
+      tokenAddress,
+      ethers.parseEther(tokenAmount != "" ? tokenAmount.toString() : "0"),
+    ],
+  });
+  const { isLoading: redeemLoading, isSuccess: redeemSuccess } =
+    useWaitForTransaction(redeemData);
+  if (!redeemLoading && redeemSuccess) {
+    toast.success("Index token redeemed successfully!!");
+  }
+  if (isRedeemError) toast.error(redeemError?.message);
+  if (redeemLoading)
+    toast.loading("Please wait while we redeem your index token for you!");
+  async function redeemTokenFromContract() {
+    await redeemWrite();
+    setTokenAmount(1);
+    refetchBalance();
+  }
+
   useEffect(() => {
     setIsLoaded(true);
   }, []);
@@ -213,34 +254,22 @@ export const RedeemTokens = ({
   }, [address, isLoaded]);
 
   useEffect(() => {
+    setBalance(
+      ethers.formatEther(
+        refetchBalanceData[0].result != null
+          ? refetchBalanceData[0].result?.toString()
+          : "0",
+        "ether"
+      )
+    );
+  }, [refetchBalanceData]);
+
+  useEffect(() => {
     renderNewPercentages();
+    refetchBalanceFromContract();
     refetchBalance();
-  }, [tokenAddress]);
+  }, [tokenAddress, redeemSuccess, redeemLoading]);
 
-  const {
-    data: issueData,
-    isLoading: issueLoading,
-    isSuccess: issueSuccess,
-    write: issueWrite,
-    isError: isIssueError,
-    error: issueError,
-  } = useContractWrite({
-    address: TokenFactoryAddress as keyof typeof TokenFactoryAddress,
-    abi: FACTORY_ABI,
-    functionName: "issueToken",
-    args: [
-      tokenAddress,
-      ethers.parseEther(tokenAmount != "" ? tokenAmount.toString() : "0"),
-    ],
-  });
-  if (issueSuccess) toast.success("Index token minted successfully!!");
-  if (isIssueError) toast.error(issueError?.message);
-  if (issueLoading)
-    toast.loading("Please wait while we mint you your index token!");
-
-  async function issueTokenFromContract() {
-    await issueWrite();
-  }
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -275,9 +304,9 @@ export const RedeemTokens = ({
       ) : (
         <DialogContent className="text-center">
           <DialogHeader>
-            <DialogTitle>Issue Index Tokens</DialogTitle>
+            <DialogTitle>Redeem Index Tokens</DialogTitle>
             <DialogDescription>
-              Issue an Index created by you or someone else
+              Redeem an Index created and receive underlying tokens in return
             </DialogDescription>
           </DialogHeader>
           <div className="token-percentages">
@@ -439,16 +468,11 @@ export const RedeemTokens = ({
               <Label htmlFor="name" className="text-left">
                 Balance
               </Label>
-              {isBalanceRefetching ? (
+              {isHashingTx || isBalanceRefetching || redeemLoading ? (
                 <Spinner size={"lg"} />
               ) : (
                 <span className="text-2xl tracking-widest text-left font-mono text-muted-foreground font-extrabold">
-                  {(!isBalanceRefetching &&
-                    !balanceRefetchError &&
-                    balanceRefetchSuccess &&
-                    balance) ||
-                    0}{" "}
-                  ether
+                  {(!refetchLoading && balance) || 0} ether
                 </span>
               )}
             </div>
@@ -474,7 +498,7 @@ export const RedeemTokens = ({
               </Label>
               <Input
                 type="number"
-                placeholder="Amount of Index Token in ether"
+                placeholder="Amount of Index Token to be redeemed in ether"
                 value={tokenAmount}
                 onChange={(e) => {
                   setTokenAmount(e.target.value);
@@ -485,14 +509,18 @@ export const RedeemTokens = ({
           <DialogFooter className="flex sm:flex-col flex-wrap items-stretch">
             <Button
               type="submit"
-              disabled={tokenAmount <= 0}
+              disabled={
+                tokenAmount <= 0 ||
+                parseFloat(tokenAmount) > parseFloat(balance) ||
+                redeemLoading
+              }
               onClick={async () => {
                 getUserIndexTokens();
-                issueTokenFromContract();
+                await redeemTokenFromContract();
               }}
             >
               Redeem Tokens
-              {issueLoading && (
+              {isHashingTx && (
                 <span className="ml-2">
                   <Spinner size={"default"} />
                 </span>
