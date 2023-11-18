@@ -33,7 +33,7 @@ import { ethers } from "ethers";
 import { PlusCircle, BadgeDollarSign } from "lucide-react";
 
 import Image from "next/image";
-export const IssueTokens = ({
+export const RedeemTokens = ({
   defaultTokenAddress,
 }: {
   defaultTokenAddress: string;
@@ -95,12 +95,11 @@ export const IssueTokens = ({
   const [tokenSymbols, setTokenSymbols] = useState<any[]>([]);
   const [underlyingTokens, setUnderlyingTokens] = useState<any[]>([]);
   const [tokenRatios, setTokenRatios] = useState<any[]>([]);
-
+  const [balance, setBalance] = useState<string>("0");
   const TokenFactoryContract: any = {
     address: TokenFactoryAddress,
     abi: FACTORY_ABI,
   };
-
   const { data, isFetching, isLoading, isSuccess } = useContractReads({
     contracts: [
       {
@@ -131,7 +130,40 @@ export const IssueTokens = ({
     ],
     structuralSharing: (prev, next) => (prev === next ? prev : next),
   });
+  const {
+    data: refetchBalanceData,
+    isLoading: isBalanceRefetching,
+    isError: balanceRefetchError,
+    isSuccess: balanceRefetchSuccess,
+  } = useContractReads({
+    contracts: [
+      {
+        address: tokenAddress,
+        abi: ERC20_ABI,
+        functionName: "balanceOf",
+        args: [address],
+      },
+    ],
+    structuralSharing: (prev, next) => (prev === next ? prev : next),
+  });
 
+  async function refetchBalance() {
+    if (balanceRefetchError || !balanceRefetchSuccess || isBalanceRefetching)
+      return;
+    // console.log("====================================");
+    // console.log(
+    //   ethers.formatEther(refetchBalanceData[0].result?.toString(), "ether")
+    // );
+    // console.log("====================================");
+    setBalance(
+      ethers.formatEther(
+        refetchBalanceData[0].result != null
+          ? refetchBalanceData[0].result?.toString()
+          : "0",
+        "ether"
+      )
+    );
+  }
   const {
     data: refetchData,
     isLoading: isRefetching,
@@ -152,12 +184,14 @@ export const IssueTokens = ({
     ],
     structuralSharing: (prev, next) => (prev === next ? prev : next),
   });
+
   async function renderNewPercentages() {
     if (refetchError || !refetchSuccess || isRefetching) return;
     setTokenRatios(refetchData[0].result);
     setUnderlyingTokens(refetchData[1].result);
     // console.log(refetchData, tokenRatios);
   }
+
   async function getUserIndexTokens() {
     if (data !== undefined) {
       setTokenNames(data[0].result);
@@ -180,6 +214,7 @@ export const IssueTokens = ({
 
   useEffect(() => {
     renderNewPercentages();
+    refetchBalance();
   }, [tokenAddress]);
 
   const {
@@ -202,366 +237,24 @@ export const IssueTokens = ({
   if (isIssueError) toast.error(issueError?.message);
   if (issueLoading)
     toast.loading("Please wait while we mint you your index token!");
-  const approveTokens = async () => {
-    try {
-      await getUserIndexTokens();
-      // await window.ethereum.enable();
 
-      // const provider = new ethers.providers.Web3Provider(
-      //   window.ethereum,
-      //   "any"
-      // );
-
-      // const signer = provider.getSigner();
-
-      let provider;
-      if (window?.ethereum == null) {
-        console.log("MetaMask not installed; using read-only defaults");
-        provider = ethers.getDefaultProvider();
-        return;
-      } else {
-        provider = new ethers.BrowserProvider(window?.ethereum);
-        await provider.send("eth_requestAccounts", []);
-        // It also provides an opportunity to request access to write
-        // operations, which will be performed by the private key
-        // that MetaMask manages for the user.
-      }
-      const signer = await provider.getSigner();
-      const WETH = new ethers.Contract(
-        WETHAddress as keyof typeof WETHAddress,
-        ERC20_ABI,
-        provider
-      );
-      const USDC = new ethers.Contract(
-        USDCAddress as keyof typeof USDCAddress,
-        ERC20_ABI,
-        provider
-      );
-      const WBTC = new ethers.Contract(
-        WBTCAddress as keyof typeof WBTCAddress,
-        ERC20_ABI,
-        provider
-      );
-      const WMATIC = new ethers.Contract(
-        MATICAddress as keyof typeof MATICAddress,
-        ERC20_ABI,
-        provider
-      );
-      const AAVE = new ethers.Contract(
-        AAVEAddress as keyof typeof AAVEAddress,
-        ERC20_ABI,
-        provider
-      );
-      const tokenArrayLength = tokenRatios.length;
-
-      console.log(tokenArrayLength);
-
-      if (tokenArrayLength >= 1 && underlyingTokens[0] == USDCAddress) {
-        const USDCWithSigner = USDC.connect(signer);
-        await USDCWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[0])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 2 && underlyingTokens[1] == USDCAddress) {
-        const USDCWithSigner = USDC.connect(signer);
-        await USDCWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[1])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 3 && underlyingTokens[2] == USDCAddress) {
-        const USDCWithSigner = USDC.connect(signer);
-        await USDCWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[2])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 4 && underlyingTokens[3] == USDCAddress) {
-        const USDCWithSigner = USDC.connect(signer);
-        await USDCWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[3])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 5 && underlyingTokens[4] == USDCAddress) {
-        const USDCWithSigner = USDC.connect(signer);
-        await USDCWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[4])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-
-      if (tokenArrayLength >= 1 && underlyingTokens[0] == WETHAddress) {
-        const WETHWithSigner = WETH.connect(signer);
-        await WETHWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[0])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 2 && underlyingTokens[1] == WETHAddress) {
-        const WETHWithSigner = WETH.connect(signer);
-        await WETHWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[1])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 3 && underlyingTokens[2] == WETHAddress) {
-        const WETHWithSigner = WETH.connect(signer);
-        await WETHWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[2])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 4 && underlyingTokens[3] == WETHAddress) {
-        const WETHWithSigner = WETH.connect(signer);
-        await WETHWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[3])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 5 && underlyingTokens[4] == WETHAddress) {
-        const WETHWithSigner = WETH.connect(signer);
-        await WETHWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[4])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-
-      if (tokenArrayLength >= 1 && underlyingTokens[0] == WBTCAddress) {
-        const WBTCWithSigner = WBTC.connect(signer);
-        await WBTCWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[0])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 2 && underlyingTokens[1] == WBTCAddress) {
-        const WBTCWithSigner = WBTC.connect(signer);
-        await WBTCWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[1])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 3 && underlyingTokens[2] == WBTCAddress) {
-        const WBTCWithSigner = WBTC.connect(signer);
-        await WBTCWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[2])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 4 && underlyingTokens[3] == WBTCAddress) {
-        const WBTCWithSigner = WBTC.connect(signer);
-        await WBTCWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[3])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 5 && underlyingTokens[4] == WBTCAddress) {
-        const WBTCWithSigner = WBTC.connect(signer);
-        await WBTCWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[4])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-
-      if (tokenArrayLength >= 1 && underlyingTokens[0] == MATICAddress) {
-        const WMATICWithSigner = WMATIC.connect(signer);
-        await WMATICWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[0])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 2 && underlyingTokens[1] == MATICAddress) {
-        const WMATICWithSigner = WMATIC.connect(signer);
-        await WMATICWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[1])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 3 && underlyingTokens[2] == MATICAddress) {
-        const WMATICWithSigner = WMATIC.connect(signer);
-        await WMATICWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[2])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 4 && underlyingTokens[3] == MATICAddress) {
-        const WMATICWithSigner = WMATIC.connect(signer);
-        await WMATICWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[3])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 5 && underlyingTokens[4] == MATICAddress) {
-        const WMATICWithSigner = WMATIC.connect(signer);
-        await WMATICWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[4])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-
-      if (tokenArrayLength >= 1 && underlyingTokens[0] == AAVEAddress) {
-        const AAVEWithSigner = AAVE.connect(signer);
-        await AAVEWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[0])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 2 && underlyingTokens[1] == AAVEAddress) {
-        const AAVEWithSigner = AAVE.connect(signer);
-        await AAVEWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[1])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 3 && underlyingTokens[2] == AAVEAddress) {
-        const AAVEWithSigner = AAVE.connect(signer);
-        await AAVEWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[2])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 4 && underlyingTokens[3] == AAVEAddress) {
-        const AAVEWithSigner = AAVE.connect(signer);
-        await AAVEWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[3])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-      if (tokenArrayLength >= 5 && underlyingTokens[4] == AAVEAddress) {
-        const AAVEWithSigner = AAVE.connect(signer);
-        await AAVEWithSigner.approve(
-          tokenAddress,
-          ethers.parseEther(
-            (
-              parseFloat(ethers.formatEther(tokenRatios[4])) * tokenAmount
-            ).toString()
-          )
-        );
-      }
-
-      // console.log("====================================");
-      // console.log(
-      //   ethers.parseEther(
-      //     (
-      //       parseFloat(ethers.formatEther(tokenRatios[0])) * tokenAmount
-      //     ).toString()
-      //   )
-      // );
-    } catch (err: any) {
-      //   window.alert(err);
-      console.log("====================================");
-      console.error(err);
-      console.log("====================================");
-      toast.error(err.message);
-    }
-  };
   async function issueTokenFromContract() {
     await issueWrite();
   }
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800">
-          Issue Token{" "}
+        <Button
+          className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800"
+          onClick={() => {
+            setTokenAddress(defaultTokenAddress);
+            renderNewPercentages();
+            refetchBalance();
+          }}
+        >
+          Redeem Token{" "}
           <span className="ml-2">
-            <PlusCircle className="h-4 w-4" />
+            <BadgeDollarSign className="h-4 w-4" />
           </span>
         </Button>
       </DialogTrigger>
@@ -744,6 +437,23 @@ export const IssueTokens = ({
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-1 items-center gap-4">
               <Label htmlFor="name" className="text-left">
+                Balance
+              </Label>
+              {isBalanceRefetching ? (
+                <Spinner size={"lg"} />
+              ) : (
+                <span className="text-2xl tracking-widest text-left font-mono text-muted-foreground font-extrabold">
+                  {(!isBalanceRefetching &&
+                    !balanceRefetchError &&
+                    balanceRefetchSuccess &&
+                    balance) ||
+                    0}{" "}
+                  ether
+                </span>
+              )}
+            </div>
+            <div className="grid grid-cols-1 items-center gap-4">
+              <Label htmlFor="name" className="text-left">
                 Token Address
               </Label>
               <Input
@@ -754,12 +464,13 @@ export const IssueTokens = ({
                 onChange={async (e) => {
                   setTokenAddress(e.target.value);
                   renderNewPercentages();
+                  refetchBalance();
                 }}
               />
             </div>
             <div className="grid grid-cols-1 items-center gap-4">
               <Label htmlFor="name" className="text-left">
-                Token Amount
+                Redemption Amount
               </Label>
               <Input
                 type="number"
@@ -772,18 +483,6 @@ export const IssueTokens = ({
             </div>
           </div>
           <DialogFooter className="flex sm:flex-col flex-wrap items-stretch">
-            <Label className="text-left mx-2 mt-1 mb-2">Step 1.</Label>
-            <Button
-              type="submit"
-              disabled={tokenAmount <= 0}
-              onClick={() => {
-                approveTokens();
-              }}
-            >
-              Approve Spending of Utility Tokens
-            </Button>
-
-            <Label className="text-left mx-2 mt-1 mb-2">Step 2.</Label>
             <Button
               type="submit"
               disabled={tokenAmount <= 0}
@@ -792,7 +491,7 @@ export const IssueTokens = ({
                 issueTokenFromContract();
               }}
             >
-              Issue Tokens
+              Redeem Tokens
               {issueLoading && (
                 <span className="ml-2">
                   <Spinner size={"default"} />

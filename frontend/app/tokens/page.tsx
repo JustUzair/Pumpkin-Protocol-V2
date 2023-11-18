@@ -15,6 +15,7 @@ import { Spinner } from "@/components/spinner";
 import Image from "next/image";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+
 import {
   BadgeDollarSign,
   Check,
@@ -32,6 +33,8 @@ import {
 } from "@/components/ui/popover";
 
 import { IssueTokens } from "./[token-actions]/_components/issue-tokens";
+
+import { RedeemTokens } from "./[token-actions]/_components/redeem-tokens";
 const Tokens = function () {
   const { chain } = useNetwork();
   const { address } = useAccount();
@@ -121,7 +124,7 @@ const Tokens = function () {
         !TokenFactoryAddress ? (
           <Error />
         ) : (
-          <div className="tokens-container w-[50%] justify-between md:w-[70%] sm:w-[80%] lg:grid lg:grid-cols-3 gap-4 md:grid md:grid-cols-2 flex flex-col mx-auto px-5 py-10">
+          <div className="tokens-container lg:w-[60%] justify-between md:w-[70%] sm:w-[80%] lg:grid lg:grid-cols-3 gap-4 md:grid md:grid-cols-2 flex flex-col mx-auto px-5 py-10">
             {tokenNames.map((_, index) => {
               if (isFetching) {
                 return (
@@ -148,7 +151,7 @@ const Tokens = function () {
                   <div className="p-5">
                     <div className="token-info flex justify-between items-center flex-wrap">
                       <h5
-                        className="truncate mb-2 lg:text-2xl md:text-xl text-base font-bold tracking-widest break-words text-gray-900 dark:text-white"
+                        className="truncate mb-2 lg:text-2xl md:text-xl block text-base font-bold tracking-widest break-words text-gray-900 dark:text-white"
                         title={`Index Token Name :  ${tokenNames[index]}`}
                       >
                         {tokenNames[index]}
@@ -230,12 +233,7 @@ const Tokens = function () {
                         ></IssueTokens>
                       </div>
                       <div className="my-2 w-[100%]">
-                        <Button className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800">
-                          Redeem Token{" "}
-                          <span className="ml-2">
-                            <BadgeDollarSign className="h-4 w-4" />
-                          </span>
-                        </Button>
+                        <RedeemTokens defaultTokenAddress={tokens[index]} />
                       </div>
                       <div className="my-2 w-[100%]">
                         <Button className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800">
