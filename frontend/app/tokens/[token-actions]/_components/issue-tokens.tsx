@@ -589,7 +589,7 @@ export const IssueTokens = ({
           </DialogHeader>
           <div className="token-percentages">
             <h3 className="text-left tracking-wider font-semibold px-3 py-2">
-              Token Composition (Modify index address below to see it's
+              Token Composition (Modify index address below to see it&apos;s
               composition)
             </h3>
             {(isLoading || isRefetching) && <Spinner size={"lg"} />}
