@@ -217,31 +217,28 @@ export const ClaimFee = ({
   }
 
   const {
-    data: redeemData,
-    write: redeemWrite,
-    isError: isRedeemError,
-    error: redeemError,
+    data: claimData,
+    write: claimWrite,
+    isError: isClaimError,
+    error: claimError,
     isLoading: isHashingTx,
   } = useContractWrite({
     address: TokenFactoryAddress as keyof typeof TokenFactoryAddress,
     abi: FACTORY_ABI,
-    functionName: "redeemToken",
-    args: [
-      tokenAddress,
-      ethers.parseEther(tokenAmount != "" ? tokenAmount.toString() : "0"),
-    ],
+    functionName: "collectFee",
+    args: [tokenAddress],
   });
-  const { isLoading: redeemLoading, isSuccess: redeemSuccess } =
-    useWaitForTransaction(redeemData);
-  if (!redeemLoading && redeemSuccess) {
-    toast.success("Index token redeemed successfully!!");
+  const { isLoading: claimLoading, isSuccess: claimSuccess } =
+    useWaitForTransaction(claimData);
+  if (!claimLoading && claimSuccess) {
+    toast.success("Index token claimed successfully!!");
   }
-  if (isRedeemError) toast.error(redeemError?.message);
-  if (redeemLoading)
-    toast.loading("Please wait while we redeem your index token for you!");
+  if (isClaimError) toast.error(claimError?.message);
+  if (claimLoading)
+    toast.loading("Please wait while we claim your index token for you!");
 
-  async function redeemTokenFromContract() {
-    await redeemWrite();
+  async function claimTokenFromContract() {
+    await claimWrite();
     await refetchBalance();
     setTokenAmount(1);
   }
@@ -259,7 +256,7 @@ export const ClaimFee = ({
   useEffect(() => {
     renderNewPercentages();
     refetchBalance();
-  }, [tokenAddress, redeemSuccess, redeemLoading]);
+  }, [tokenAddress, claimSuccess, claimLoading]);
 
   return (
     <Dialog>
@@ -276,13 +273,6 @@ export const ClaimFee = ({
       !(chainId in contractAddresses) ||
       !TokenFactoryAddress ? (
         <DialogContent>
-          {/* <div
-        className="bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4 rounded-xl mt-3"
-        role="alert"
-      >
-        <p className="font-bold">No valid Chain found!</p>
-        <p>Connect to valid network to get utility tokens.</p>
-      </div> */}
           <Error />
         </DialogContent>
       ) : (
@@ -453,7 +443,7 @@ export const ClaimFee = ({
                 Balance
               </Label>
               {isBalanceRefetching && <Spinner />}
-              {isHashingTx || isBalanceRefetching || redeemLoading ? (
+              {isHashingTx || isBalanceRefetching || claimLoading ? (
                 <Spinner size={"lg"} />
               ) : (
                 <span className="text-2xl tracking-widest text-center font-mono text-muted-foreground font-extrabold">
@@ -486,11 +476,11 @@ export const ClaimFee = ({
               disabled={
                 tokenAmount <= 0 ||
                 parseFloat(tokenAmount) > parseFloat(balance) ||
-                redeemLoading
+                claimLoading
               }
               onClick={async () => {
                 getUserIndexTokens();
-                await redeemTokenFromContract();
+                await claimTokenFromContract();
               }}
             >
               Claim Fee
