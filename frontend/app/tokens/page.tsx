@@ -257,7 +257,7 @@ const Tokens = function () {
               <div className="empty-container">
                 <div className="title w-[80%]  mx-auto mb-5 my-2 px-10 py-1 bg-blue-100 border-t border-b border-violet-700 text-violet-900 dark:border-blue-950 dark:text-blue-950 ">
                   <p className="tracking-widest text-center mb-2 font-mono text-3xl font-semibold">
-                    You haven't created any Index of your own.
+                    You haven&apos;t created any Index of your own.
                   </p>
                   <p className="text-justify font-mono text-xl">
                     If you want to interact with token created with someone
