@@ -32,10 +32,10 @@ import {
   useWaitForTransaction,
 } from "wagmi";
 import { ethers } from "ethers";
-import { PlusCircle, BadgeDollarSign } from "lucide-react";
+import { HeartHandshake } from "lucide-react";
 
 import Image from "next/image";
-export const RedeemTokens = ({
+export const ClaimFee = ({
   defaultTokenAddress,
 }: {
   defaultTokenAddress: string;
@@ -264,17 +264,10 @@ export const RedeemTokens = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button
-          className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800"
-          onClick={() => {
-            setTokenAddress(defaultTokenAddress);
-            renderNewPercentages();
-            refetchBalance();
-          }}
-        >
-          Redeem Token{" "}
+        <Button className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800">
+          Claim Fee{" "}
           <span className="ml-2">
-            <BadgeDollarSign className="h-4 w-4" />
+            <HeartHandshake className="h-4 w-4" />
           </span>
         </Button>
       </DialogTrigger>
@@ -295,9 +288,9 @@ export const RedeemTokens = ({
       ) : (
         <DialogContent className="text-center">
           <DialogHeader>
-            <DialogTitle>Redeem Index Tokens</DialogTitle>
+            <DialogTitle>Claim Index Token Fee</DialogTitle>
             <DialogDescription>
-              Redeem an Index created and receive underlying tokens in return
+              Claim 1% of the total holdings of the index token created by you.
             </DialogDescription>
           </DialogHeader>
           <div className="token-percentages">
@@ -486,19 +479,6 @@ export const RedeemTokens = ({
                 }}
               />
             </div>
-            <div className="grid grid-cols-1 items-center gap-4">
-              <Label htmlFor="name" className="text-left">
-                Redemption Amount
-              </Label>
-              <Input
-                type="number"
-                placeholder="Amount of Index Token to be redeemed in ether"
-                value={tokenAmount}
-                onChange={(e) => {
-                  setTokenAmount(e.target.value);
-                }}
-              />
-            </div>
           </div>
           <DialogFooter className="flex sm:flex-col flex-wrap items-stretch">
             <Button
@@ -513,7 +493,7 @@ export const RedeemTokens = ({
                 await redeemTokenFromContract();
               }}
             >
-              Redeem Tokens
+              Claim Fee
               {isHashingTx && (
                 <span className="ml-2">
                   <Spinner size={"default"} />

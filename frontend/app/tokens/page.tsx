@@ -33,8 +33,9 @@ import {
 } from "@/components/ui/popover";
 
 import { IssueTokens } from "./[token-actions]/_components/issue-tokens";
-
 import { RedeemTokens } from "./[token-actions]/_components/redeem-tokens";
+import { ClaimFee } from "./[token-actions]/_components/claim-fee";
+
 const Tokens = function () {
   const { chain } = useNetwork();
   const { address } = useAccount();
@@ -236,12 +237,7 @@ const Tokens = function () {
                         <RedeemTokens defaultTokenAddress={tokens[index]} />
                       </div>
                       <div className="my-2 w-[100%]">
-                        <Button className="w-[100%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-800">
-                          Claim Fee{" "}
-                          <span className="ml-2">
-                            <HeartHandshake className="h-4 w-4" />
-                          </span>
-                        </Button>
+                        <ClaimFee defaultTokenAddress={tokens[index]} />
                       </div>
                     </div>
                   </div>
