@@ -67,7 +67,7 @@ const Tokens = function () {
     abi: FACTORY_ABI,
   };
 
-  const { data, isFetching, isLoading, isSuccess } = useContractReads({
+  const { data, isFetching, isLoading, isSuccess, refetch } = useContractReads({
     contracts: [
       {
         ...TokenFactoryContract,
@@ -88,6 +88,7 @@ const Tokens = function () {
   });
 
   async function getUserIndexTokens() {
+    refetch();
     if (data !== undefined) {
       setTokenNames(data[0].result);
       setTokenSymbols(data[1].result);
@@ -255,21 +256,21 @@ const Tokens = function () {
             </div>
             {!(tokenNames.length > 0) && (
               <div className="empty-container">
-                <div className="title w-[80%]  mx-auto mb-5 my-2 px-10 py-1 bg-blue-100 border-t border-b border-violet-700 text-violet-900 dark:border-blue-950 dark:text-blue-950 ">
+                <div className="title w-[80%] sm:w-[80%] lg:w-[40%] md:w-[60%] mx-auto mb-5 my-2 px-10 py-1 bg-blue-100 border-t border-b border-violet-700 text-violet-900 dark:border-blue-950 dark:text-blue-950 ">
                   <p className="tracking-widest text-center mb-2 font-mono text-3xl font-semibold">
                     You haven&apos;t created any Index of your own.
                   </p>
                   <p className="text-justify font-mono text-xl">
-                    If you want to interact with token created with someone
-                    else, use their address to issue or redeem a token.
+                    If you want to interact with token created by someone else,
+                    use their address to issue or redeem a token.
                   </p>
                 </div>
 
-                <div className="actions-container lg:w-[50%] flex flex-col lg:flex-row items-center justify-between mx-auto py-3 px-2">
-                  <div className="my-2 lg:my-0 w-[25%]">
+                <div className="actions-container w-[80%] sm:w-[80%] lg:w-[40%] md:w-[60%] flex flex-col lg:flex-row items-center justify-between mx-auto py-3 px-2">
+                  <div className="my-2 lg:my-0 w-[80%] md:w-[40%]  lg:w-[25%]">
                     <IssueTokens defaultTokenAddress={""}></IssueTokens>
                   </div>
-                  <div className="my-2 lg:my-0 w-[25%]">
+                  <div className="my-2 lg:my-0 w-[80%] md:w-[40%] lg:w-[25%]">
                     <RedeemTokens defaultTokenAddress={""} />
                   </div>
                 </div>
