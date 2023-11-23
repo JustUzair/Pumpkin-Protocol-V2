@@ -25,7 +25,20 @@ export const Navbar = () => {
           router.push("/");
         }}
       >
-        <Image src="/next.svg" alt={"Logo"} width={"50"} height={"50"} />
+        <Image
+          src={"/png/logo.png"}
+          alt={"Logo"}
+          width={"100"}
+          height={"100"}
+          className="dark:hidden"
+        />
+        <Image
+          src={"/png/logo-dark.png"}
+          alt={"Logo"}
+          width={"100"}
+          height={"100"}
+          className="hidden dark:block"
+        />
       </span>
       <div className="flex items-center justify-around">
         {/* {!!user ? (

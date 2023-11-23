@@ -9,19 +9,19 @@ const inter = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Zk-Index",
+  title: "TokenForge",
   description: "A decentralized exchange dApp created with solidity and Nextjs",
   icons: [
-    {
-      url: "/logo.png",
-      href: "/logo.png",
-      media: "(prefers-color-scheme:light)",
-    },
-    {
-      url: "/logo.png",
-      href: "/logo.png",
-      media: "(prefers-color-scheme:dark)",
-    },
+    // {
+    //   url: "/logo.svg",
+    //   href: "/logo.svg",
+    //   media: "(prefers-color-scheme:light)",
+    // },
+    // {
+    //   url: "/logo-dark.svg",
+    //   href: "/logo-dark.svg",
+    //   media: "(prefers-color-scheme:dark)",
+    // },
   ],
 };
 
