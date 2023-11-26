@@ -57,24 +57,24 @@ const Home = () => {
           <div className="flex items-center justify-between px-5 mt-10 flex-col lg:flex-row gap-y-4 ">
             <div className="flex flex-col w-[33%] items-center justify-around">
               <Image
-                src="/category1-img.png"
+                src="/tokens/scifi_index.png"
                 width={100}
                 alt="category"
                 height={100}
-                className="w-[120px] animate-bounce"
+                className="w-[120px] animate-bounce mb-5"
               />
-              <span className="text-xl font-semibold">Metaverse Index</span>
+              <span className="text-xl font-semibold">SCIFI Index</span>
               <span className="w-[50%]">
-                Composition: APE, ICP, STX, MANA, THETA, AXS, SAND
+                Composition: SUSHI, DIA, FTT, PERP
               </span>
             </div>
             <div className="flex flex-col w-[33%] items-center justify-around">
               <Image
-                src="/category2-img.png"
+                src="/tokens/dpi.svg"
                 width={100}
                 alt="category"
                 height={100}
-                className="w-[120px] animate-bounce"
+                className="w-[120px] animate-bounce mb-5"
               />
               <span className="text-xl font-semibold">Defi Pulse Index</span>
               <span className="w-[50%]">
@@ -84,17 +84,15 @@ const Home = () => {
             </div>
             <div className="flex flex-col w-[33%] items-center justify-around">
               <Image
-                src="/category3-img.png"
+                src="/tokens/nfti.svg"
                 width={100}
                 alt="category"
                 height={100}
-                className="w-[120px] animate-bounce"
+                className="w-[120px] animate-bounce mb-5"
               />
-              <span className="text-xl font-semibold">
-                Liquid Staking Index
-              </span>
+              <span className="text-xl font-semibold">NFT Index</span>
               <span className="w-[50%]">
-                Composition: STETH, RETH, FRXETH, MSOL, SAVAX, AKRETH
+                Composition: MANA, ENJ, SAND, MATIC, WAXE
               </span>
             </div>
           </div>
