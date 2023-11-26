@@ -464,7 +464,9 @@ export const RedeemTokens = ({
                 <Spinner size={"lg"} />
               ) : (
                 <span className="text-2xl tracking-widest text-center font-mono text-muted-foreground font-extrabold">
-                  {(!refetchLoading && !isBalanceRefetching && balance) || 0}{" "}
+                  <span className="truncate">
+                    {(!refetchLoading && !isBalanceRefetching && balance) || 0}{" "}
+                  </span>
                   ether
                 </span>
               )}
