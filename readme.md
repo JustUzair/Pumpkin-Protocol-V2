@@ -10,17 +10,19 @@
 
 ##### 0️⃣ Polygon ZkEVM network currently does not have any Index Tokens.
 
-##### 💪 We took inspiration from [TokenSets / Set Protocol](https://www.tokensets.com/) and recreated it without any fees.
+##### 💪 We took inspiration from [TokenSets](https://www.tokensets.com/) and recreated it without any fees plus returns to the creators of the index.
 
 ## What it does
 
 ##### 👨‍🍳 Lets users create & manage their own index tokens
 
+##### 🪙Mint Index Tokens in exchange for utility tokens.
+
 ##### 💵 Redeem index tokens for underlying assets.
 
-##### 🤑 Creators can collect a custom streaming fee from 0 to 1% per year of the total holdings of the index created by them
+##### 🤑 Creators can collect a custom streaming fee from 0 to 1% per year of the total holdings of the index created by them.
 
-##### 📈 Others can buy these tokens on a decentralized exchange
+##### 📈 People can list and buy these tokens on a decentralized exchange.
 
 ## What's next for Token Forge
 
@@ -28,7 +30,7 @@
 
 ##### 🔐 Security Auditing
 
-# Try the website on polygon zkevm testnet
+# Try the website on Polygon ZkEVM Testnet
 
 #### 1. Mint Test Tokens
 
@@ -42,21 +44,21 @@
 
 #### 3. Take a look at your contracts
 
-1. If you are not redirected already, you should be on the "view-tokens" page. If not, you can click "My Tokens". You should see your newly created tokens there, if not try giving your browser a refresh.
+1. If you are not redirected already, you should be on the "tokens" page and be able to view, interact with and share your tokens with others. If not, you can click "View All Indexes" on the home page. You should see your newly created tokens there, if not try giving your browser window a refresh.
 
 #### 4. Try Issuing Tokens
 
-1. Select oyur index token or token address shared with you to view its composition, <br/>
-2. Approve the spending of underlying tokens. Accept all transactions (will be 1-5 transactions) based on the number of underlying tokens that compose your index.<br/>
-3. Click "Issue Tokens" to get the index token in exchange for the underlying tokens.<br/>
-4. Upon successful tx, you will have received your index on your wallet address
+1.  Select your index token or token address shared with you to view its composition, <br/>
+2.  Approve the spending of underlying / utility tokens. Accept all transactions (will be between 1-5 transactions) based on the number of underlying tokens that compose your index.<br/>
+3.  Click "Issue Tokens" to get the index token in exchange for the underlying tokens.<br/>
+4.  Upon successful Tx, you will have received your index on your wallet address
 
 #### 5. Try Claiming Streaming Fee
 
 1. Issue an index token on two or more different addresses <br/>
 2. Click the "Claim Fee" Button. <br/>
 3. Paste the index token address into the field <br/>
-4. Click the "Claim Fee" button to confirm taking the streaming fee. There should be 1% tokens burned from all wallets and 1% minted to the creator's address.
+4. Click the "Claim Fee" button to confirm taking the streaming fee. There should be 1% tokens burned from all wallets that hold that index and 1% minted to the index creator's address.
 
 #### 6. Try Redeeming Tokens
 
@@ -67,4 +69,4 @@
 
 #### 7. Rebalancing
 
-Since this design is designed for the mainnet, it will not work on testnet so we have disabled this feature.
+Since this design is designed for the mainnet, it will not work on testnet so we have disabled this feature for the purpose of this hackathon.
