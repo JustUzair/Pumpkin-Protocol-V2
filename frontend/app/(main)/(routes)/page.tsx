@@ -13,7 +13,7 @@ const Home = () => {
       <div className="mx-auto lg:w-[70%] sm:w-[100%]">
         <div className="flex items-center justify-between flex-col lg:flex-row">
           <Image
-            src={"/png/landing-2.png"}
+            src={"/png/landing.png"}
             width={100}
             alt="about"
             height={100}
@@ -41,7 +41,7 @@ const Home = () => {
         </div>
 
         <div className="text-center text-gray-800 dark:text-gray-200 mt-20 pb-10">
-          <div className="flex w-[50%] items-center justify-around mx-auto">
+          <div className="flex lg:w-[55%] w-[80%] items-center justify-around mx-auto">
             <h2 className="font-bold text-3xl justify-self-end">
               Popular Index Tokens
             </h2>
@@ -55,7 +55,7 @@ const Home = () => {
             </Button>
           </div>
           <div className="flex items-center justify-between px-5 mt-10 flex-col lg:flex-row gap-y-4 ">
-            <div className="flex flex-col w-[33%] items-center justify-around">
+            <div className="flex flex-col lg:w-[33%] w-[80%] items-center justify-around mb-10">
               <Image
                 src="/tokens/scifi_index.png"
                 width={100}
@@ -68,7 +68,7 @@ const Home = () => {
                 Composition: SUSHI, DIA, FTT, PERP
               </span>
             </div>
-            <div className="flex flex-col w-[33%] items-center justify-around">
+            <div className="flex flex-col lg:w-[33%] w-[80%] items-center justify-around mb-10">
               <Image
                 src="/tokens/dpi.svg"
                 width={100}
@@ -82,7 +82,7 @@ const Home = () => {
                 YFI, COMP
               </span>
             </div>
-            <div className="flex flex-col w-[33%] items-center justify-around">
+            <div className="flex flex-col lg:w-[33%] w-[80%] items-center justify-around mb-10">
               <Image
                 src="/tokens/nfti.svg"
                 width={100}

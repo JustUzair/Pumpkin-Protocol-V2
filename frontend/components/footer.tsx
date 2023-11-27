@@ -7,21 +7,14 @@ export const Footer = () => {
           <div className="sm:flex sm:items-center sm:justify-between">
             <a
               href=""
-              className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
+              className="flex items-center  sm:mb-0 space-x-3 rtl:space-x-reverse"
             >
               <Image
-                src={"/png/logo.png"}
+                src={"/png/logo-footer.png"}
                 alt={"Logo"}
                 width={"100"}
                 height={"100"}
-                className="dark:hidden"
-              />
-              <Image
-                src={"/png/logo-dark.png"}
-                alt={"Logo"}
-                width={"100"}
-                height={"100"}
-                className="hidden dark:block"
+                className="w-[350px]"
               />
             </a>
             <ul className="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">

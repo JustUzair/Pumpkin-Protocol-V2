@@ -28,16 +28,16 @@ export const Navbar = () => {
         <Image
           src={"/png/logo.png"}
           alt={"Logo"}
-          width={"100"}
-          height={"100"}
-          className="dark:hidden"
+          width={"50"}
+          height={"50"}
+          className="lg:hidden h-[75px] w-[75px]"
         />
         <Image
-          src={"/png/logo-dark.png"}
+          src={"/png/logo-text.png"}
           alt={"Logo"}
           width={"100"}
           height={"100"}
-          className="hidden dark:block"
+          className="hidden lg:block w-[250px] h-[50px] object-contain"
         />
       </span>
       <div className="flex items-center justify-around">
