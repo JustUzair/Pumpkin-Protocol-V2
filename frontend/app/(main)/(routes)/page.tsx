@@ -10,16 +10,16 @@ const Home = () => {
   const [mintUtility, setMintUtility] = useState(false);
   return (
     <>
-      <div className="mx-auto lg:w-[60%] sm:w-[100%]">
+      <div className="mx-auto lg:w-[70%] sm:w-[100%]">
         <div className="flex items-center justify-between flex-col lg:flex-row">
           <Image
-            src={"/about.png"}
+            src={"/png/landing-2.png"}
             width={100}
             alt="about"
             height={100}
-            className="w-[300px]"
+            className="w-[100%] lg:w-[65%] "
           />
-          <div className="flex flex-col items-center lg:w-[50%] w-[80%]">
+          <div className="flex flex-col items-center lg:w-[35%] w-[80%]">
             <span className="font-extrabold space-x-3 text-5xl leading-tight -tracking-wider w-[70%] self-start">
               Cryptocurrencies Unite, Create an Index in sight!
             </span>
@@ -29,7 +29,7 @@ const Home = () => {
             <div className="flex items-center justify-between lg:w-[65%] md:w-[40%] sm:w-[100%] mt-10 self-start">
               <Button
                 variant="ghost"
-                className="border-2 border-slate-900 dark:border-violet-400 mr-2"
+                className="border-2 border-slate-900 dark:border-orange-400 mr-2"
                 onClick={() => router.push("/tokens/create")}
               >
                 Create Now

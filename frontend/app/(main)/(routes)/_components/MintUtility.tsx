@@ -85,7 +85,7 @@ export function MintUtility() {
       <DialogTrigger asChild>
         <Button
           variant="ghost"
-          className="border-2 border-slate-900 dark:border-violet-400 "
+          className="border-2 border-slate-900 dark:border-orange-400 "
         >
           Mint Utility Tokens
         </Button>
