@@ -282,7 +282,7 @@ const CreateIndexToken = () => {
   if (isLoaded) {
     return (
       <div className="py-[50px]">
-        <div className="backdrop-blur-3xl mx-auto w-[80%] md:[60%] lg:w-[40%] sm:w-[80%] bg-black/5 dark:bg-white/10  py-4 bg-opacity-10 rounded-2xl p-3 text-white border border-white shadow-lg">
+        <div className="backdrop-blur-3xl  mx-auto w-[80%] md:[60%] lg:w-[40%] sm:w-[80%] bg-black/8 dark:bg-white/10 py-4 bg-opacity-10 rounded-2xl p-3 text-white border border-white shadow-lg">
           {chainId === undefined ||
           !(chainId in contractAddresses) ||
           !TokenFactoryAddress ? (
@@ -290,7 +290,7 @@ const CreateIndexToken = () => {
               <Error />
             </div>
           ) : (
-            <div className="index-token--container m-4 text-gray-700 dark:text-gray-100">
+            <div className="index-token--container m-4 text-stone-900 dark:text-gray-100">
               <span className="text-center font-poppins font-bold text-3xl break-words tracking-widest underline">
                 Create an Index Token
               </span>
@@ -509,7 +509,7 @@ const CreateIndexToken = () => {
 
                 <div className="approx-token-price--container">
                   <div className="underlying-token--price">
-                    <div className="token-label--container flex  items-center ml-10">
+                    <div className="token-label--container flex  break-word items-start  lg:items-center lg:justify-center flex-col lg:flex-row justify-start text-left">
                       <Label className="">
                         {" "}
                         <Image
@@ -534,7 +534,7 @@ const CreateIndexToken = () => {
                     </div>
                   </div>
                   <div className="underlying-token--price">
-                    <div className="token-label--container flex items-center ml-10">
+                    <div className="token-label--container flex break-word items-start  lg:items-center lg:justify-center flex-col lg:flex-row justify-start text-left">
                       <Label className="">
                         {" "}
                         <Image
@@ -559,7 +559,7 @@ const CreateIndexToken = () => {
                     </div>
                   </div>
                   <div className="underlying-token--price">
-                    <div className="token-label--container flex items-center ml-10">
+                    <div className="token-label--container flex break-word items-start  lg:items-center lg:justify-center flex-col lg:flex-row justify-start text-left">
                       <Label className="">
                         {" "}
                         <Image
@@ -584,7 +584,7 @@ const CreateIndexToken = () => {
                     </div>
                   </div>
                   <div className="underlying-token--price">
-                    <div className="token-label--container flex items-center ml-10">
+                    <div className="token-label--container flex break-word items-start  lg:items-center lg:justify-center flex-col lg:flex-row justify-start text-left">
                       <Label className="">
                         {" "}
                         <Image
@@ -609,7 +609,7 @@ const CreateIndexToken = () => {
                     </div>
                   </div>
                   <div className="underlying-token--price">
-                    <div className="token-label--container flex items-center ml-10">
+                    <div className="token-label--container flex break-word items-start  lg:items-center lg:justify-center flex-col lg:flex-row justify-start text-left">
                       <Label className="">
                         {" "}
                         <Image
@@ -634,14 +634,14 @@ const CreateIndexToken = () => {
                     </div>
                   </div>
                   <br />
-                  <div className="final-price--container text-center text-3xl font-mono font-semibold tracking-wide border-2 rounded-xl border-slate-900 dark:border-gray-400 w-[50%] px-5 py-2 mx-auto">
+                  <div className="final-price--container bg-orange-100 text-center text-3xl font-mono font-semibold tracking-wide border-2 rounded-xl border-slate-900 dark:border-gray-400 w-[50%] px-5 py-2 mx-auto">
                     Approx Value in USD ~{" "}
                     <span>${calculateIndexTokenPrice()}</span>
                   </div>
                   <div className="relative">
                     <Button
                       variant={"ghost"}
-                      className="lg:w-[50%] md:w-[70%] w-[100%] sm:text-sm absolute translate-y-[20%] translate-x-[-50%] left-[50%] border-2 dark:bg-slate-900 text-white bg-orange-700 border-slate-900 dark:border-white hover:bg-orange-500 dark:hover:bg-slate-700"
+                      className="font-bold lg:w-[50%] md:w-[70%] w-[100%] sm:text-sm absolute translate-y-[20%] translate-x-[-50%] left-[50%] border-2 dark:bg-slate-900 hover:text-white text-zinc-800 bg-orange-100 border-slate-900 dark:border-white hover:bg-orange-400 dark:hover:bg-slate-700"
                       onClick={callCreateToken}
                     >
                       <BadgePlus className="h-4 w-4" />

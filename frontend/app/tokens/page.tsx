@@ -148,7 +148,7 @@ const Tokens = function () {
                       key={index}
                     >
                       <Image
-                        className="rounded-t-lg object-fill p-2 w-[100%] bg-gradient-to-br from-orange-100 to-orange-400 dark:bg-gradient-to-br dark:from-zinc-100 dark:to-zinc-400 "
+                        className="rounded-t-lg object-fill p-2 w-[100%] bg-gradient-to-br from-orange-100 to-orange-400 dark:bg-gradient-to-br dark:from-slate-700 dark:to-slate-900 dark:border dark:border-b-slate-400"
                         src="/png/token-holder.png"
                         alt="Polygon"
                         height={100}
@@ -158,7 +158,7 @@ const Tokens = function () {
                       <div className="p-5">
                         <div className="token-info flex justify-between items-center flex-wrap">
                           <h5
-                            className="truncate mb-2 lg:text-2xl md:text-xl block text-base font-bold tracking-widest break-words text-gray-900 dark:text-white"
+                            className="truncate mb-2 lg:text-2xl md:text-xl block text-base w-[100%] font-bold tracking-widest break-words text-gray-900 dark:text-white"
                             title={`Index Token Name :  ${tokenNames[index]}`}
                           >
                             {tokenNames[index]}

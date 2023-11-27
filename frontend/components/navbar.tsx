@@ -9,8 +9,10 @@ import Image from "next/image";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useRouter } from "next/navigation";
 import { Spinner } from "./spinner";
+import { cn } from "@/lib/utils";
 export const Navbar = () => {
   const router = useRouter();
+  const scrolled = useScrollTop();
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -18,7 +20,12 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-between p-5 sticky top-0 bg-orange-100 dark:bg-black z-[99999]">
+    <div
+      className={cn(
+        "flex items-center justify-between p-5 sticky top-0 bg-orange-100 dark:bg-black z-[99999] transition-all duration-100",
+        scrolled && "border border-b-white dark:border-b-gray-400"
+      )}
+    >
       <span
         className="cursor-pointer"
         onClick={() => {
