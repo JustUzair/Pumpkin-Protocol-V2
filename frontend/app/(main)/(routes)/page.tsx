@@ -61,7 +61,7 @@ const Home = () => {
                 width={100}
                 alt="category"
                 height={100}
-                className="w-[120px] animate-bounce mb-5"
+                className="delay-400 w-[120px] animate-bounce mb-5"
               />
               <span className="text-xl font-semibold">SCIFI Index</span>
               <span className="w-[50%]">
@@ -74,7 +74,7 @@ const Home = () => {
                 width={100}
                 alt="category"
                 height={100}
-                className="w-[120px] animate-bounce mb-5"
+                className="delay-300 w-[120px] animate-bounce mb-5"
               />
               <span className="text-xl font-semibold">Defi Pulse Index</span>
               <span className="w-[50%]">
@@ -88,7 +88,7 @@ const Home = () => {
                 width={100}
                 alt="category"
                 height={100}
-                className="w-[120px] animate-bounce mb-5"
+                className="delay-150 w-[120px] animate-bounce mb-5"
               />
               <span className="text-xl font-semibold">NFT Index</span>
               <span className="w-[50%]">

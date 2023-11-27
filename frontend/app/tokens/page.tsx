@@ -136,7 +136,7 @@ const Tokens = function () {
                         className="w-[12em] max-w-[15em] h-[30vh]"
                         key={index}
                       >
-                        <div className="flex items-center justify-center w-[100%] h-[100%] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                        <div className="flex items-center justify-center w-[100%] h-[100%] bg-white border border-white rounded-lg shadow dark:bg-gray-800 dark:border-orange-400">
                           <Spinner size={"lg"} />
                         </div>
                       </div>
@@ -144,12 +144,12 @@ const Tokens = function () {
                   }
                   return (
                     <div
-                      className="max-w-[15em] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                      className="max-w-[15em] bg-gray-100 border-2 border-white rounded-lg shadow dark:bg-gray-800 dark:border-orange-400"
                       key={index}
                     >
                       <Image
-                        className="rounded-t-lg object-fill w-[100%]"
-                        src="/polygon.jpeg"
+                        className="rounded-t-lg object-fill p-2 w-[100%] bg-orange-300"
+                        src="/png/token-holder.png"
                         alt="Polygon"
                         height={100}
                         width={100}

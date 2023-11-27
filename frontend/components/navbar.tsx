@@ -18,7 +18,7 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-between p-5 sticky top-0 bg-[#fafafa] dark:bg-black z-[99999]">
+    <div className="flex items-center justify-between p-5 sticky top-0 bg-orange-100 dark:bg-black z-[99999]">
       <span
         className="cursor-pointer"
         onClick={() => {

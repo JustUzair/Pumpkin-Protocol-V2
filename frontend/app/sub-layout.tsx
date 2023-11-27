@@ -53,7 +53,7 @@ export const SubLayout = ({ children }: { children: React.ReactNode }) => {
           <Toaster position="bottom-center" />
           <Navbar />
 
-          <div className="bg-gradient-to-br from-blue-100 to-purple-200 min-h-screen min-w-full dark:from-black dark:to-[#292E49] mb-[10em]">
+          <div className="bg-gradient-to-br from-orange-100 to-orange-400 min-h-screen min-w-full dark:from-black dark:to-[#292E49] mb-[15em]">
             {children}
           </div>
 

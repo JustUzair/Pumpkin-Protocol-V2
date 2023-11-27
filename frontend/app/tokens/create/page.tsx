@@ -641,7 +641,7 @@ const CreateIndexToken = () => {
                   <div className="relative">
                     <Button
                       variant={"ghost"}
-                      className="lg:w-[50%] md:w-[70%] w-[100%] sm:text-sm absolute translate-y-[20%] translate-x-[-50%] left-[50%] border-2 dark:bg-slate-900 text-white bg-violet-700 border-slate-900 dark:border-white hover:bg-violet-500 dark:hover:bg-slate-700"
+                      className="lg:w-[50%] md:w-[70%] w-[100%] sm:text-sm absolute translate-y-[20%] translate-x-[-50%] left-[50%] border-2 dark:bg-slate-900 text-white bg-orange-700 border-slate-900 dark:border-white hover:bg-orange-500 dark:hover:bg-slate-700"
                       onClick={callCreateToken}
                     >
                       <BadgePlus className="h-4 w-4" />
