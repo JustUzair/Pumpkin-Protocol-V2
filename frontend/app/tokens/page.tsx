@@ -144,11 +144,11 @@ const Tokens = function () {
                   }
                   return (
                     <div
-                      className="max-w-[15em] bg-gray-100 border-2 border-white rounded-lg shadow dark:bg-gray-800 dark:border-orange-400"
+                      className="max-w-[15em] bg-gray-100  border-2 border-white rounded-lg shadow dark:bg-gray-800 dark:border-orange-400"
                       key={index}
                     >
                       <Image
-                        className="rounded-t-lg object-fill p-2 w-[100%] bg-orange-300"
+                        className="rounded-t-lg object-fill p-2 w-[100%] bg-gradient-to-br from-orange-100 to-orange-400 dark:bg-gradient-to-br dark:from-zinc-100 dark:to-zinc-400 "
                         src="/png/token-holder.png"
                         alt="Polygon"
                         height={100}
