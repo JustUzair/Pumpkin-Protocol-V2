@@ -119,10 +119,10 @@ export function MintUtility() {
           <Error />
         </DialogContent>
       ) : (
-        <DialogContent className="text-center">
+        <DialogContent className="text-center backdrop-blur-sm border-2 border-slate-900">
           <DialogHeader>
             <DialogTitle>Mint Utility Tokens</DialogTitle>
-            <DialogDescription>
+            <DialogDescription className="text-gray-900">
               Get your underlying test tokens for testing the dApp
             </DialogDescription>
           </DialogHeader>
@@ -132,9 +132,7 @@ export function MintUtility() {
                 USDC
               </Label>
               <Label htmlFor="name" className="text-left">
-                <span className="truncate text-muted-foreground text-xs">
-                  {USDCAddress}
-                </span>
+                <span className="truncate text-xs">{USDCAddress}</span>
               </Label>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -142,9 +140,7 @@ export function MintUtility() {
                 WETH
               </Label>
               <Label htmlFor="name" className="text-left">
-                <span className="truncate text-muted-foreground text-xs">
-                  {WETHAddress}
-                </span>
+                <span className="truncate text-xs">{WETHAddress}</span>
               </Label>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -152,9 +148,7 @@ export function MintUtility() {
                 WBTC
               </Label>
               <Label htmlFor="name" className="text-left">
-                <span className="truncate text-muted-foreground text-xs">
-                  {WBTCAddress}
-                </span>
+                <span className="truncate text-xs">{WBTCAddress}</span>
               </Label>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -162,9 +156,7 @@ export function MintUtility() {
                 MATIC
               </Label>
               <Label htmlFor="name" className="text-left">
-                <span className="truncate text-muted-foreground text-xs">
-                  {MATICAddress}
-                </span>
+                <span className="truncate text-xs">{MATICAddress}</span>
               </Label>
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
@@ -172,9 +164,7 @@ export function MintUtility() {
                 AAVE
               </Label>
               <Label htmlFor="name" className="text-left">
-                <span className="truncate text-muted-foreground text-xs">
-                  {AAVEAddress}
-                </span>
+                <span className="truncate text-xs">{AAVEAddress}</span>
               </Label>
             </div>
           </div>
