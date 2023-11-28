@@ -22,6 +22,7 @@ import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/spinner";
+import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import {
   useAccount,
   useContractRead,
@@ -40,6 +41,7 @@ export const IssueTokens = ({
 }) => {
   const { chain } = useNetwork();
   const { address } = useAccount();
+  const addRecentTransaction = useAddRecentTransaction();
   const [isLoaded, setIsLoaded] = useState(false);
   const chainId = (chain?.id?.toString() as string) || ("" as string);
   const [tokenAddress, setTokenAddress] = useState<string>(defaultTokenAddress);
@@ -199,8 +201,16 @@ export const IssueTokens = ({
       ethers.parseEther(tokenAmount != "" ? tokenAmount.toString() : "0"),
     ],
   });
-  if (!issueLoading && issueSuccess)
+  if (!issueLoading && issueSuccess) {
     toast.success("Index token minted successfully!!");
+    addRecentTransaction({
+      hash: issueData?.hash,
+      description: `Issue Index  ${tokenAddress.substring(
+        0,
+        4
+      )}...${tokenAddress.substring(-1, 4)}`,
+    });
+  }
   if (isIssueError) toast.error(issueError?.message);
   if (issueLoading)
     toast.loading("Please wait while we mint you your index token!");

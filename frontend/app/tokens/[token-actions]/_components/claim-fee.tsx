@@ -33,7 +33,7 @@ import {
 } from "wagmi";
 import { ethers } from "ethers";
 import { HeartHandshake } from "lucide-react";
-
+import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
 export const ClaimFee = ({
   defaultTokenAddress,
@@ -42,6 +42,7 @@ export const ClaimFee = ({
 }) => {
   const { chain } = useNetwork();
   const { address } = useAccount();
+  const addRecentTransaction = useAddRecentTransaction();
   const [isLoaded, setIsLoaded] = useState(false);
   const chainId = (chain?.id?.toString() as string) || ("" as string);
   const [tokenAddress, setTokenAddress] = useState<string>(defaultTokenAddress);
@@ -220,6 +221,7 @@ export const ClaimFee = ({
     data: claimData,
     write: claimWrite,
     isError: isClaimError,
+    isSuccess: isClaimSuccess,
     error: claimError,
     isLoading: isHashingTx,
   } = useContractWrite({
@@ -228,6 +230,13 @@ export const ClaimFee = ({
     functionName: "collectFee",
     args: [tokenAddress],
   });
+  if (isClaimSuccess) {
+    addRecentTransaction({
+      hash: claimData?.hash,
+      description: "Claim Fee",
+    });
+  }
+
   const { isLoading: claimLoading, isSuccess: claimSuccess } =
     useWaitForTransaction(claimData);
   if (!claimLoading && claimSuccess) {

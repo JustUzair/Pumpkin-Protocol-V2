@@ -35,6 +35,7 @@ import { ethers } from "ethers";
 import { PlusCircle, BadgeDollarSign } from "lucide-react";
 
 import Image from "next/image";
+import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 export const RedeemTokens = ({
   defaultTokenAddress,
 }: {
@@ -42,6 +43,7 @@ export const RedeemTokens = ({
 }) => {
   const { chain } = useNetwork();
   const { address } = useAccount();
+  const addRecentTransaction = useAddRecentTransaction();
   const [isLoaded, setIsLoaded] = useState(false);
   const chainId = (chain?.id?.toString() as string) || ("" as string);
   const [tokenAddress, setTokenAddress] = useState<string>(defaultTokenAddress);
@@ -222,6 +224,7 @@ export const RedeemTokens = ({
     isError: isRedeemError,
     error: redeemError,
     isLoading: isHashingTx,
+    isSuccess: redeemHashSuccess,
   } = useContractWrite({
     address: TokenFactoryAddress as keyof typeof TokenFactoryAddress,
     abi: FACTORY_ABI,
@@ -231,6 +234,15 @@ export const RedeemTokens = ({
       ethers.parseEther(tokenAmount != "" ? tokenAmount.toString() : "0"),
     ],
   });
+  if (redeemHashSuccess) {
+    addRecentTransaction({
+      hash: redeemData?.hash as string,
+      description: `Redeem Index  ${tokenAddress.substring(
+        0,
+        4
+      )}...${tokenAddress.substring(-1, 4)}`,
+    });
+  }
   const { isLoading: redeemLoading, isSuccess: redeemSuccess } =
     useWaitForTransaction(redeemData);
   if (!redeemLoading && redeemSuccess) {

@@ -19,9 +19,12 @@ import { toast } from "sonner";
 
 import { useEffect } from "react";
 import { Spinner } from "@/components/spinner";
+import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 
 export function MintUtility() {
   const { chain } = useNetwork();
+  const addRecentTransaction = useAddRecentTransaction();
+
   const chainId = (chain?.id?.toString() as string) || ("" as string);
   // console.log("====================================");
   // console.log(chain?.id);
@@ -74,11 +77,22 @@ export function MintUtility() {
         ]
       : null;
 
-  const { data, isLoading, isSuccess, write } = useContractWrite({
+  const {
+    data: mintTxHash,
+    isLoading,
+    isSuccess,
+    write,
+  } = useContractWrite({
     address: MintAllUtliityAddress as keyof typeof MintAllUtliityAddress,
     abi: mintAllUtilityAbi,
     functionName: "mintAllTokens",
   });
+  if (isSuccess) {
+    addRecentTransaction({
+      hash: mintTxHash?.hash as string,
+      description: "Mint Utility Tx",
+    });
+  }
   if (isSuccess) toast.success("Test Tokens minted successfully!");
   return (
     <Dialog>
@@ -167,8 +181,8 @@ export function MintUtility() {
           <DialogFooter>
             <Button
               type="submit"
-              onClick={() => {
-                write();
+              onClick={async () => {
+                await write();
               }}
             >
               Mint Now

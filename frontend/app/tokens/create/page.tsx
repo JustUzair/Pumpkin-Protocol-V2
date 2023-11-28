@@ -16,6 +16,7 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { BadgePlus } from "lucide-react";
+import { useAddRecentTransaction } from "@rainbow-me/rainbowkit";
 
 const COINGECKO_PRICE_FEED_URL =
   "https://api.coingecko.com/api/v3/simple/price?ids=weth,aave,wrapped-fantom,dai,usd-coin,tether,binance-usd,wrapped-bitcoin,chainlink,true-usd,wmatic,frax&vs_currencies=usd";
@@ -24,7 +25,7 @@ const CreateIndexToken = () => {
   const { chain } = useNetwork();
   const chainId = (chain?.id?.toString() as string) || ("" as string);
   const router = useRouter();
-
+  const addRecentTransaction = useAddRecentTransaction();
   const [isLoaded, setIsLoaded] = useState(false);
   const [usdc, setUsdc] = useState(20);
   const [wbtc, setWbtc] = useState(20);
@@ -115,7 +116,12 @@ const CreateIndexToken = () => {
     setTokenSymbol("");
   }
 
-  const { data, isLoading, isSuccess, write } = useContractWrite({
+  const {
+    data: createData,
+    isLoading,
+    isSuccess,
+    write,
+  } = useContractWrite({
     address: TokenFactoryAddress as keyof typeof TokenFactoryAddress,
     abi: FACTORY_ABI,
     functionName: "createToken",
@@ -123,6 +129,10 @@ const CreateIndexToken = () => {
   });
 
   if (isSuccess) {
+    addRecentTransaction({
+      hash: createData?.hash as string,
+      description: `Create Index ${tokenName}`,
+    });
     router.push("/tokens");
   }
   const [coinPriceData, setCoinPriceData] = useState<any>({});

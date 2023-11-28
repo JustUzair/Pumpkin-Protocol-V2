@@ -3,12 +3,7 @@
 import contractAddresses from "../../constants/networkMappings.json";
 import ERC20_ABI from "../../constants/ERC20_ABI.json";
 import FACTORY_ABI from "../../constants/FACTORY_ABI.json";
-import {
-  useContractWrite,
-  useNetwork,
-  useAccount,
-  useContractReads,
-} from "wagmi";
+import { useNetwork, useAccount, useContractReads } from "wagmi";
 import { Error } from "@/components/error";
 import { useEffect, useState } from "react";
 import { Spinner } from "@/components/spinner";
@@ -39,6 +34,7 @@ import { ClaimFee } from "./[token-actions]/_components/claim-fee";
 const Tokens = function () {
   const { chain } = useNetwork();
   const { address } = useAccount();
+
   const chainId = (chain?.id?.toString() as string) || ("" as string);
   const [isLoaded, setIsLoaded] = useState(false);
   const TokenFactoryAddress =
