@@ -12,16 +12,10 @@ export const metadata: Metadata = {
   title: "TokenForge",
   description: "A decentralized exchange dApp created with solidity and Nextjs",
   icons: [
-    // {
-    //   url: "/logo.svg",
-    //   href: "/logo.svg",
-    //   media: "(prefers-color-scheme:light)",
-    // },
-    // {
-    //   url: "/logo-dark.svg",
-    //   href: "/logo-dark.svg",
-    //   media: "(prefers-color-scheme:dark)",
-    // },
+    {
+      url: "/png/token-holder.png",
+      href: "/png/token-holder.png",
+    },
   ],
 };
 
