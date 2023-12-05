@@ -132,7 +132,7 @@ Since this design is designed for the mainnet, it will not work on testnet so we
 
 ![2](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/account-2-issue-tx.png)
 
-#### Account 1 Claims 1% of total tokens as streaimg that are issued by others
+#### Account 1 Claims 1% of total tokens as streaming fee that are issued by others
 
 ![6](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/12.png)
 ![6](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/13.png)
