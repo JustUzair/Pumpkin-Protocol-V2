@@ -484,11 +484,6 @@ export const ClaimFee = ({
           <DialogFooter className="flex sm:flex-col flex-wrap items-stretch">
             <Button
               type="submit"
-              disabled={
-                tokenAmount <= 0 ||
-                parseFloat(tokenAmount) > parseFloat(balance) ||
-                claimLoading
-              }
               onClick={async () => {
                 getUserIndexTokens();
                 await claimTokenFromContract();
