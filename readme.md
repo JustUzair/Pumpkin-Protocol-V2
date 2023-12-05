@@ -1,4 +1,4 @@
-# Deployed URL : [LIVE WEBSITE](https://zk-index.vercel.app/)
+# Deployed URL : [LIVE WEBSITE](https://tokenforge-zk.vercel.app/)
 
 # 🔥Token Forge 🔥
 
@@ -70,3 +70,77 @@
 #### 7. Rebalancing
 
 Since this design is designed for the mainnet, it will not work on testnet so we have disabled this feature for the purpose of this hackathon.
+
+## Screenshots (Features Demo)
+
+#### Default Mode
+
+![default](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/1.png)
+
+#### Dark Mode
+
+![dark](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/1-dark.png)
+
+#### Account Transactions History
+
+![6](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/tx-history.png)
+
+#### Create Token Page
+
+![2](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/2.png)
+
+#### Create Token Tx
+
+![2](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/3.png)
+
+#### List of My Indexed
+
+![2](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/4.png)
+
+![2](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/5.1.png)
+
+#### View Index Token's Composition (Paste any valid index token address)
+
+![5.2](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/5.2.png)
+
+#### Issue Index Tokens in exchange for Utility Tokens
+
+![2](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/6.png)
+
+#### Import Token into the wallet
+
+![2](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/7.png)
+
+#### Redeem Index Token
+
+![2](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/8.png)
+![3](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/9.png)
+
+#### Token redemption transaction on block explorer
+
+![6](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/token-redeem.png)
+
+#### Issue Index Token from Account 2
+
+![4](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/10.png)
+
+#### 100 Tokens issued by Account 2 (MYEPIC is created by Account 1)
+
+![5](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/11.png)
+
+#### 100 Tokens issuance transaction on block explorer by Account 2 (MYEPIC is created by Account 1)
+
+![2](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/account-2-issue-tx.png)
+
+#### Account 1 Claims 1% of total tokens as streaimg that are issued by others
+
+![6](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/12.png)
+![6](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/13.png)
+
+#### As you can see ~ 1 index token is being received by Account 1 since Account 2 issued 100 tokens and 1% was charged
+
+![6](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/14.png)
+
+#### Index Token with Account 2 after 1% streaming fee was charged
+
+![6](https://raw.githubusercontent.com/JustUzair/zk-index-polygon/master/frontend/Screenshots/after-fee-claim-account-2.png)
