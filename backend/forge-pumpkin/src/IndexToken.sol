@@ -8,7 +8,20 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
  * @title Index Token Contract
  * @notice Implements an index token that represents a portfolio of other tokens.
  * @dev This contract uses SafeERC20 for safe transfers and interactions with ERC20 tokens.
+
+      __J"L__
+  ,-"`--...--'"-.
+ /  /\       /\  \
+J  /__\  _  /__\  L
+|       / \       |
+J    _  """  _    F
+ \   \\/\_/\//   /
+  "-._\/\_/\/_,-"
+      """""""
+ Pumpkin Protocol
  */
+
+
 contract IndexTokenNew is IERC20 {
     using SafeERC20 for IERC20;
 
@@ -74,6 +87,8 @@ contract IndexTokenNew is IERC20 {
     error ZeroAmount();
     error EmptyArray();
     error InvalidFeeClaim();
+    error NonMatchingArrays();
+    error PercentagesNotEqual100();
 
     /**
      * @notice Initializes the IndexToken contract with given parameters.
@@ -89,6 +104,10 @@ contract IndexTokenNew is IERC20 {
         if (_tokens.length == 0 || 
             _percentages.length == 0
             ) revert EmptyArray();
+
+        if (_tokens.length != _percentages.length) revert NonMatchingArrays();
+
+        creationTime = block.timestamp;
         
         //check percentages
         uint256 numOfTokens = _percentages.length;
@@ -98,7 +117,10 @@ contract IndexTokenNew is IERC20 {
             percentageCounter += _percentages[i];
         }
 
-        require(percentageCounter == totalPercentage, "percentages do not add up to 100");
+        if (percentageCounter != totalPercentage) revert PercentagesNotEqual100();
+
+        percentages = _percentages;
+
         owner = _owner;
         tokens = _tokens;
 

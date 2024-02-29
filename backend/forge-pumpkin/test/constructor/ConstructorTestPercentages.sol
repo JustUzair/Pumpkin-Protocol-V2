@@ -29,6 +29,12 @@ contract ConstructorTestPercentages is DSTest {
     }
 
     function testConstructorSetsInitialValues() public {
+
+        uint256 expectedLength = tokens.length;
+        uint256 actualLength = indexToken.getTokens().length;
+        console.log("Expected tokens length:", expectedLength);
+        console.log("Actual tokens length:", actualLength);
+        require(expectedLength == actualLength, "Token array length mismatch");
         // Check tokens and percentages are set correctly
         for(uint i = 0; i < tokens.length; i++) {
             // Log the expected and actual token addresses before asserting
