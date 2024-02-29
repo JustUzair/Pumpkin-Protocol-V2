@@ -1,8 +1,0 @@
-node_modules
-config.env
-.env
-.env.local
-
-artifacts
-cache
-package-lock.json
