@@ -1,193 +1,249 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.0;
 
-import "./interfaces/IERC20.sol";
 import "./interfaces/IUniswapV2Router/IUniswapV2Router.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
+/**
+ * @title Index Token Contract
+ * @notice Implements an index token that represents a portfolio of other tokens.
+ * @dev This contract uses SafeERC20 for safe transfers and interactions with ERC20 tokens.
+ */
 contract IndexTokenNew is IERC20 {
-    using SafeMath for uint256;
-    uint public totalSupply;
-    mapping(address => uint) public balanceOf;
-    mapping(address => mapping(address => uint)) public allowance;
+    using SafeERC20 for IERC20;
+
+    /// @notice The total number of index tokens in existence.
+    uint256 public totalSupply;
+
+    /// @notice A mapping from an account to the number of index tokens it owns.
+    mapping(address => uint256) public balanceOf;
+
+    /// @notice A mapping from an owner to an operator that allows the operator to spend index tokens on the owner's behalf.
+    mapping(address => mapping(address => uint256)) public allowance;
+
+    /// @notice The name of the index token.
     string public name;
+
+    /// @notice The symbol of the index token.
     string public symbol;
+
+    /// @notice The number of decimal places the index token uses.
     uint8 public decimals = 18;
 
-    //Index token constants
+    /// @notice The timestamp when the index token was created.
+    uint256 public creationTime;
+
+    /// @notice The timestamp of the last time the streaming fee was claimed.
+    uint256 public lastClaimFee;
+
+    /// @dev The address of the contract owner, set at the time of contract deployment and immutable thereafter.
     address immutable owner;
-    address[] public holders;
 
+    /// @notice The total percentage that the sum of the individual token percentages must equal to, set to 100% represented in a more granular form for precision.
+    uint256 constant totalPercentage = 100_0000;
+
+    /// @notice An array of addresses for the ERC20 tokens that comprise the index token.
     address[] public tokens;
-    uint[] public percentages;
 
-    address uniswapAddress = 0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D ;
-    IUniswapV2Router02 uniswap = IUniswapV2Router02(uniswapAddress);
-    address wMATICAddr = 0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270;
+    /// @notice An array of decimal places for each of the ERC20 tokens in the `tokens` array.
+    uint256[] public tokenDecimals;
+
+    /// @notice An array of percentages that each token in the `tokens` array represents within the index token, corresponding by index.
+    uint256[] public percentages;
+
+    /// @notice The address of the SpookySwap router used for executing trades.
+    address spookySwapAddress = 0xF491e7B69E4244ad4002BC14e878a34207E38c29;
+
+    /// @dev A reference to the SpookySwap router contract, initialized with the `spookySwapAddress`.
+    IUniswapV2Router02 spookySwap = IUniswapV2Router02(spookySwapAddress);
+
+    /// @notice The address of the wrapped FTM token, used as an intermediary in token swaps.
+    address wFTMAddr = 0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83;
 
 
-    constructor(address _owner, address[] memory _tokens, uint[] memory  _percentages, string memory _name, string memory _symbol) {
+    /**
+     * @notice Only allows the owner to execute the function.
+     */
+    modifier onlyOwner() {
+        if(msg.sender != owner) revert NotOwner(); 
+        _;
+    }
+
+    // Custom errors for reverting transactions with a reason
+    error NotOwner();
+    error ZeroAmount();
+    error EmptyArray();
+    error InvalidFeeClaim();
+
+    /**
+     * @notice Initializes the IndexToken contract with given parameters.
+     * @param _owner The address of the contract owner.
+     * @param _tokens Array of addresses of the underlying tokens.
+     * @param _percentages Array of percentages of the underlying tokens.
+     * @param _name Name of the index token.
+     * @param _symbol Symbol of the index token.
+     * @dev The sum of _percentages must equal totalPercentage.
+     */
+
+    constructor(address _owner, address[] memory _tokens, uint256[] memory  _percentages, string memory _name, string memory _symbol) {
+        if (_tokens.length == 0 || 
+            _percentages.length == 0
+            ) revert EmptyArray();
+        
         //check percentages
-        uint numOfTokens = _percentages.length;
-        uint percentageCounter;
-        uint _decimalFactor = 10**16;
+        uint256 numOfTokens = _percentages.length;
+        uint256 percentageCounter;
 
-        for(uint i; i < numOfTokens; i++) {
+        for(uint256 i; i < numOfTokens; i++) {
             percentageCounter += _percentages[i];
         }
 
-        //multiply to correct decimals
-        for(uint i; i < numOfTokens; i++){
-            _percentages[i] = _percentages[i] * _decimalFactor;
-        }
-
-        require(percentageCounter <= 100, "percentages do not add up to 100");
+        require(percentageCounter == totalPercentage, "percentages do not add up to 100");
         owner = _owner;
         tokens = _tokens;
-        percentages = _percentages;
+
         name = _name;
         symbol = _symbol;
 
-
-
     }
 
-    function getMinToken(uint token,uint amount) public view returns (uint256 result){
-        uint _decimalFactor = 10**18;
-        uint percentage = percentages[token];
-        result = percentage.mul(amount).div(_decimalFactor);
+    // minimum amount of an underlying token given an amount of index token
+    function getMinToken(uint256 _token,uint256 _amount) public view returns (uint256 result){
+
+        uint256 numDecimals = tokenDecimals[_token];
+
+        uint256 decimalOffset;
+
+        if (numDecimals > 18) {
+            decimalOffset = numDecimals - 18;
+            uint256 percentage = percentages[_token];
+            result = _amount * percentage / totalPercentage;
+            result = result * (10 ** decimalOffset);
+        }
+        if (numDecimals < 18) {
+            decimalOffset = 18 - numDecimals;
+            uint256 percentage = percentages[_token];
+            result = _amount * percentage / totalPercentage;
+            result = result / (10 ** decimalOffset);
+        }
+        else {
+        uint256 percentage = percentages[_token];
+        result = _amount * percentage / totalPercentage;
+        }
     }
 
     //Index token mint
-    function mint(uint amount) public {
+    function mint(uint256 _amount) public {
+        if(_amount == 0 ) revert ZeroAmount();
         //get number of tokens using length
-        uint numOfTokens = tokens.length;
+        uint256 numOfTokens = tokens.length;
     
         //loop through all tokens
-        for(uint i; i < numOfTokens; i++){
+        for(uint256 i; i < numOfTokens; i++){
             address _token = tokens[i];
 
-            uint transferAmount = getMinToken(i, amount);
-            bool success = IERC20(_token).transferFrom(tx.origin,address(this), transferAmount);
-            require(success, "transfer failed");
-        }
-        //add to holders array
-        holders.push(tx.origin);
+            uint256 transferAmount = getMinToken(i, _amount);
+            IERC20(_token).safeTransferFrom(msg.sender,address(this), transferAmount);
 
-        _mint(amount);
+        }
+
+        _mint(_amount);
     }
 
 
-
-    function redeem(uint amount) public {
+    // burn index tokens for underlying tokens
+    function redeem(uint256 _amount) public {
         //get number of tokens using length
-        require(amount <= balanceOf[tx.origin] );
+        require(_amount <= balanceOf[msg.sender] );
 
-        uint numOfTokens = tokens.length;
+        uint256 numOfTokens = tokens.length;
         address[] memory _tokens = tokens;
 
         //loop through all tokens
-        for (uint i; i < numOfTokens; i++) {
+        for (uint256 i; i < numOfTokens; i++) {
             address _token = _tokens[i];
 
-            uint transferAmount = getMinToken(i, amount);
-            IERC20(_token).approve(tx.origin, transferAmount);
-            bool success = IERC20(_token).transfer(tx.origin, transferAmount);
-            require(success, "transfer failed");
+            uint256 transferAmount = getMinToken(i, _amount);
+
+            IERC20(_token).safeTransfer(msg.sender, transferAmount);
+
         }
 
-        burn(tx.origin,amount); 
+        burn(msg.sender,_amount); 
     }
 
 
-    //owner withdraw streaming fee
-    function streamingFee() public  {
-        require(tx.origin == owner, "Not owner!");
-
-        address[] memory _holders = holders;
-
-        uint feeCounter;
-     
-
-
-    // REMOVE DUPLICATE HOLDERS IN ARRAY
-    // use nested for loop to find the duplicate elements in array 
-    uint x;
-    uint y;
-    uint z;
-    uint size = holders.length;
-    for ( x = 0; x < size; x ++)  
-    {  
-        for ( y = x + 1; y < size; y++)  
-        {  
-            // use if statement to check duplicate element  
-            if ( _holders[x] == _holders[y])  
-            {  
-                // delete the current position of the duplicate element  
-                for ( z = y; z < size - 1; z++)  
-                {  
-                    _holders[z] = _holders[z + 1];  
-                }  
-                // decrease the size of array after removing duplicate element  
-                size--;  
-                  
-            // if the position of the elements is changes, don't increase the index j  
-                y--;      
-            }  
-        }  
-    }
-
-        //rebase / reduce supply by 1%
-        uint numHolders = _holders.length;
-        for (uint i; i < numHolders; i++){
-            if (balanceOf[_holders[i]] > 0){
-            uint amtToBurn = (balanceOf[_holders[i]]) / 99;
-            
-            burn(_holders[i], amtToBurn);
-            feeCounter += amtToBurn;
-            }
-        }
-
-        _mint(feeCounter);
-
-    
-    }
-
-    function rebalancePercentages() public {  
-        require(tx.origin == owner); 
-        uint numOfTokens = tokens.length;
-
-        uint total;
-        uint _decimalFactor = 10**18;
-
-        //find balance of all tokens
-        for (uint i; i < numOfTokens; i++) {
-
-            total += IERC20(tokens[i]).balanceOf(address(this));
-
-        }
-
-        //change percentage values in storage
-        for (uint i; i < numOfTokens; i++) {
-            percentages[i] = IERC20(tokens[i]).balanceOf(address(this)) * _decimalFactor / total;
-        }
+    //owner withdraw streaming fee of 1% per year
+    function streamingFee() public onlyOwner()  {
+        if (block.timestamp < creationTime + 365 days || 
+        block.timestamp > lastClaimFee + 365 days) revert InvalidFeeClaim();
         
+        lastClaimFee = block.timestamp;
+
+        uint256 numOfTokens = tokens.length;
+        address[] memory _tokens = tokens;
+
+        for (uint256 i; i < numOfTokens; i++) {
+            address _token = _tokens[i];
+
+            //calculate 1% to be withdrawn
+            uint256 transferAmount = IERC20(_token).balanceOf(_token) / 100;
+            IERC20(_token).safeTransfer(msg.sender, transferAmount);
+
+        }
+
     }
 
+        
+function rebalancePercentages() internal {  
+    
+    uint256 numOfTokens = tokens.length;
 
-    function rebalance(uint tokenOut, uint tokenIn, uint _amount) public {
+    uint256 totalValueAdjusted = 0;
+
+    uint256[] memory adjustedValues = new uint256[](numOfTokens);
+
+    for (uint256 i = 0; i < numOfTokens; i++) {
+        uint256 tokenDecimal_ = tokenDecimals[i];
+        uint256 tokenBalance = IERC20(tokens[i]).balanceOf(address(this));
+        
+        uint256 adjustedBalance;
+        if (tokenDecimal_ > 18) {
+            adjustedBalance = tokenBalance / (10**(tokenDecimal_ - 18));
+        } else if (tokenDecimal_ < 18) {
+            adjustedBalance = tokenBalance * (10**(18 - tokenDecimal_));
+        } else {
+            adjustedBalance = tokenBalance;
+        }
+
+        adjustedValues[i] = adjustedBalance;
+
+        totalValueAdjusted += adjustedBalance;
+    }
+
+    for (uint256 i = 0; i < numOfTokens; i++) {
+
+        uint256 newPercentage = (adjustedValues[i] * totalPercentage) / totalValueAdjusted;
+        
+        percentages[i] = newPercentage;
+    }
+}
+
+
+
+    function rebalance(uint256 tokenOut, uint256 tokenIn, uint256 _amountIn, uint256 _minTokenOut) public {
         address[] memory path = new address[](2);
         //path[0] = tokens[tokenOut]; 
         //path[1] = tokens[tokenIn];
         //better rates:
         path[0] = tokens[tokenOut];
-        path[1] = wMATICAddr; 
+        path[1] = wFTMAddr; 
         path[1] = tokens[tokenIn];
 
         
-        IERC20(tokens[tokenOut]).approve(uniswapAddress,_amount);
+        IERC20(tokens[tokenOut]).safeIncreaseAllowance(spookySwapAddress,_amountIn);
 
-        uniswap.swapExactTokensForTokens(_amount, 0, path, address(this), block.timestamp + 15);
+        spookySwap.swapExactTokensForTokens(_amountIn, _minTokenOut, path, address(this), block.timestamp + 15);
 
         rebalancePercentages();
         
@@ -201,7 +257,7 @@ contract IndexTokenNew is IERC20 {
         return symbol;
     }
 
-    function getPercentages(uint i) public view returns (uint) {
+    function getPercentages(uint256 i) public view returns (uint256) {
         return percentages[i];
     }
 
@@ -211,52 +267,44 @@ contract IndexTokenNew is IERC20 {
     }
 
 
-    function transfer(address recipient, uint amount) external returns (bool) {
-        balanceOf[tx.origin] -= amount;
+    function transfer(address recipient, uint256 amount) external returns (bool) {
+        balanceOf[msg.sender] -= amount;
         balanceOf[recipient] += amount;
 
-        //add to holders array
-        holders.push(recipient);
-
-        emit Transfer(tx.origin, recipient, amount);
+        emit Transfer(msg.sender, recipient, amount);
         return true;
     }
 
-    function approve(address spender, uint amount) external returns (bool) {
-        allowance[tx.origin][spender] = amount;
-        emit Approval(tx.origin, spender, amount);
+    function approve(address spender, uint256 amount) external returns (bool) {
+        allowance[msg.sender][spender] = amount;
+        emit Approval(msg.sender, spender, amount);
         return true;
     }
 
     function transferFrom(
         address sender,
         address recipient,
-        uint amount
+        uint256 amount
     ) external returns (bool) {
-        allowance[sender][tx.origin] -= amount;
+        allowance[sender][msg.sender] -= amount;
         balanceOf[sender] -= amount;
         balanceOf[recipient] += amount;
-
-
-        //add to holders array
-        holders.push(recipient);
-
 
         emit Transfer(sender, recipient, amount);
         return true;
     }
 
-    function _mint(uint amount) internal {
-        balanceOf[tx.origin] += amount;
+    function _mint(uint256 amount) internal {
+        balanceOf[msg.sender] += amount;
         totalSupply += amount;
 
-        emit Transfer(address(0), tx.origin, amount);
+        emit Transfer(address(0), msg.sender, amount);
     }
 
-    function burn(address burnee, uint amount) internal {
+    function burn(address burnee, uint256 amount) internal {
         balanceOf[burnee] -= amount;
         totalSupply -= amount;
-        emit Transfer(tx.origin, address(0), amount);
+        emit Transfer(msg.sender, address(0), amount);
     }
 
 
@@ -265,19 +313,19 @@ contract IndexTokenNew is IERC20 {
         return tokens;
     }
 
-    function getSingleToken(uint _index) public view returns (address) {
+    function getSingleToken(uint256 _index) public view returns (address) {
         return tokens[_index];
     }
 
-    function getAllPercentages() public view returns (uint[] memory) {
+    function getAllPercentages() public view returns (uint256[] memory) {
         return percentages;
     }
 
-    function getSinglePercentage(uint _index) public view returns (uint) {
+    function getSinglePercentage(uint256 _index) public view returns (uint256) {
         return percentages[_index];
     }
 
-    function getNumOfTokens() public view returns (uint) {
+    function getNumOfTokens() public view returns (uint256) {
         return tokens.length;
     }
 
