@@ -231,7 +231,7 @@ function rebalancePercentages() internal {
 
 
 
-    function rebalance(uint256 tokenOut, uint256 tokenIn, uint256 _amountIn, uint256 _minTokenOut) public {
+    function rebalance(uint256 tokenOut, uint256 tokenIn, uint256 _amountIn, uint256 _minTokenOut) public onlyOwner {
         address[] memory path = new address[](2);
         //path[0] = tokens[tokenOut]; 
         //path[1] = tokens[tokenIn];
