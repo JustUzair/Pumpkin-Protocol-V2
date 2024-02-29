@@ -37,7 +37,7 @@ contract IndexTokenNew is IERC20 {
     uint256 public lastClaimFee;
 
     /// @dev The address of the contract owner, set at the time of contract deployment and immutable thereafter.
-    address immutable owner;
+    address public owner;
 
     /// @notice The total percentage that the sum of the individual token percentages must equal to, set to 100% represented in a more granular form for precision.
     uint256 constant totalPercentage = 100_0000;
