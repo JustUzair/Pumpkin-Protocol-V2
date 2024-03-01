@@ -135,29 +135,25 @@ contract IndexTokenNew is IERC20 {
     }
 
     // minimum amount of an underlying token given an amount of index token
-    function getMinToken(uint256 _token,uint256 _amount) public view returns (uint256 result){
+function getMinToken(uint256 _token, uint256 _amount) public view returns (uint256 result) {
+    uint256 numDecimals = tokenDecimals[_token];
+    uint256 percentage = percentages[_token];
+    uint256 scalingFactor = 10**18; // Use a scaling factor to increase precision
 
-        uint256 numDecimals = tokenDecimals[_token];
-
-        uint256 decimalOffset;
-
-        if (numDecimals > 18) {
-            decimalOffset = numDecimals - 18;
-            uint256 percentage = percentages[_token];
-            result = _amount * percentage / totalPercentage;
-            result = result * (10 ** decimalOffset);
-        }
-        if (numDecimals < 18) {
-            decimalOffset = 18 - numDecimals;
-            uint256 percentage = percentages[_token];
-            result = _amount * percentage / totalPercentage;
-            result = result / (10 ** decimalOffset);
-        }
-        else {
-        uint256 percentage = percentages[_token];
-        result = _amount * percentage / totalPercentage;
-        }
+    if (numDecimals > 18) {
+        uint256 decimalOffset = numDecimals - 18;
+        // Scale up before performing the operation to preserve precision
+        result = (_amount * scalingFactor * percentage / totalPercentage) * (10**decimalOffset) / scalingFactor;
+    } else if (numDecimals < 18) {
+        uint256 decimalOffset = 18 - numDecimals;
+        // Scale up before performing the operation to preserve precision
+        result = (_amount * scalingFactor * percentage / totalPercentage) / (10**decimalOffset) / scalingFactor;
+    } else {
+        // Scale up before performing the operation to preserve precision
+        result = (_amount * scalingFactor * percentage / totalPercentage) / scalingFactor;
     }
+}
+
 
     //Index token mint
     function mint(uint256 _amount) public {

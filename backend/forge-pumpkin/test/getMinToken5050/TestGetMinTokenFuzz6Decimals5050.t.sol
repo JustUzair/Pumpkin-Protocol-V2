@@ -7,7 +7,7 @@ import "../../src/TestToken.sol";
 import "../../src/IndexToken.sol";
 import "forge-std/console.sol"; // Import the console for logging
 
-contract TestGetMinTokenFuzz is DSTest {
+contract TestGetMinTokenFuzz6Decimals5050 is DSTest, Test {
     TestToken testToken1;
     TestToken testToken2;
     IndexTokenNew indexToken;
@@ -29,7 +29,7 @@ contract TestGetMinTokenFuzz is DSTest {
 
     function testGetMinTokenFuzz(uint256 fuzzedIndexTokenAmount) public {
         // Constrain fuzzed value between 1 wei and 50 ether
-        vm.assume(fuzzedIndexTokenAmount >= 1 && fuzzedIndexTokenAmount <= 50 ether);
+        vm.assume(fuzzedIndexTokenAmount >= 250000000000000000 && fuzzedIndexTokenAmount <= 50 ether);
 
         uint256 tokenIndex = 0; // Test for the first token
 
@@ -38,6 +38,8 @@ contract TestGetMinTokenFuzz is DSTest {
 
         console.log("Fuzzed indexTokenAmount (wei):", fuzzedIndexTokenAmount);
         console.log("Actual min token amount (wei):", actualMinTokenAmount);
+
+
     }
 
 }

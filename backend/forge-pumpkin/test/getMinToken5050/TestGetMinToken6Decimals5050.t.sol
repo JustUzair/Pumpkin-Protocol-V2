@@ -6,7 +6,7 @@ import "../../src/TestToken.sol";
 import "../../src/IndexToken.sol";
 import "forge-std/console.sol"; // Import the console for logging
 
-contract TestGetMinToken6Decimals is DSTest {
+contract TestGetMinToken6Decimals5050 is DSTest {
     TestToken testToken1;
     TestToken testToken2;
     IndexTokenNew indexToken;
