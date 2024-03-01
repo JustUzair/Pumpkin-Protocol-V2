@@ -9,12 +9,13 @@ contract TestToken is IERC20 {
     mapping(address => mapping(address => uint)) public allowance;
     string public name;
     string public symbol;
-    uint8 public decimals = 18;
+    uint8 public decimals;
 
 
-    constructor(string memory _name,string memory _symbol){
+    constructor(string memory _name,string memory _symbol, uint8 _decimals){
         name=_name;
         symbol=_symbol;
+        decimals=_decimals;
 }
     function transfer(address recipient, uint amount) external returns (bool) {
         balanceOf[msg.sender] -= amount;

@@ -53,13 +53,13 @@ contract IndexTokenNew is IERC20 {
     address public owner;
 
     /// @notice The total percentage that the sum of the individual token percentages must equal to, set to 100% represented in a more granular form for precision.
-    uint256 constant totalPercentage = 100_0000;
+    uint256 public constant totalPercentage = 100_0000;
 
     /// @notice An array of addresses for the ERC20 tokens that comprise the index token.
     address[] public tokens;
 
     /// @notice An array of decimal places for each of the ERC20 tokens in the `tokens` array.
-    uint256[] public tokenDecimals;
+    uint8[] public tokenDecimals;
 
     /// @notice An array of percentages that each token in the `tokens` array represents within the index token, corresponding by index.
     uint256[] public percentages;
@@ -118,6 +118,11 @@ contract IndexTokenNew is IERC20 {
         }
 
         if (percentageCounter != totalPercentage) revert PercentagesNotEqual100();
+
+        // set token decimals
+        for (uint256 i; i < _tokens.length; i++) {
+            tokenDecimals.push(IERC20Extended(_tokens[i]).decimals());
+        }
 
         percentages = _percentages;
 
@@ -352,4 +357,9 @@ function rebalancePercentages() internal {
     }
 
 
+}
+
+
+interface IERC20Extended is IERC20 {
+    function decimals() external view returns (uint8);
 }

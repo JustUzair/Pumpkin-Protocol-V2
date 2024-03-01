@@ -14,8 +14,8 @@ contract ConstructorTestNameAndSymbol is DSTest {
 
     function setUp() public {
         // Deploy test tokens
-        testToken1 = new TestToken("Test Token 1", "TT1");
-        testToken2 = new TestToken("Test Token 2", "TT2");
+        testToken1 = new TestToken("Test Token 1", "TT1", 18);
+        testToken2 = new TestToken("Test Token 2", "TT2", 18);
 
         // Prepare tokens and percentages arrays
         tokens.push(address(testToken1));

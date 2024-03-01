@@ -4,8 +4,9 @@ pragma solidity ^0.8.0;
 import "ds-test/test.sol";
 import "../../src/IndexToken.sol";
 import "../../src/TestToken.sol";
+import "forge-std/console.sol"; // Import the console for logging
 
-contract ConstructorTestOwner is DSTest {
+contract ConstructorTestDecimals is DSTest {
     IndexTokenNew indexToken;
     TestToken testToken1;
     TestToken testToken2;
@@ -28,17 +29,12 @@ contract ConstructorTestOwner is DSTest {
     }
 
     function testConstructorSetsInitialValues() public {
-        // Check owner is set correctly
-        assertEq(address(this), address(indexToken.owner()));
 
-        // // Check name and symbol are set correctly
-        // assertEq("Index Token", indexToken.name());
-        // assertEq("IT", indexToken.symbol());
+    //view     uint256[] public tokenDecimals;
+    console.log("First tokenDecimals: ", indexToken.tokenDecimals(0));
+    console.log("Second tokenDecimals: ", indexToken.tokenDecimals(1));
 
-        // // Check tokens and percentages are set correctly
-        // for(uint i = 0; i < tokens.length; i++) {
-        //     assertEq(tokens[i], indexToken.getTokens()[i]);
-        //     assertEq(percentages[i], indexToken.getAllPercentages()[i]);
-        // }
+
+
     }
 }
